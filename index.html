@@ -10,7 +10,6 @@
     
     <style>
         :root {
-            /* NieR Automata Color Scheme */
             --bg-color: #E5DFC9;
             --grid-line: rgba(74, 69, 61, 0.08);
             --card-bg: #2B2825;
@@ -66,7 +65,6 @@
             transition: background-color 0.4s ease, color 0.4s ease;
         }
 
-        /* Header UI */
         header {
             width: 100%;
             padding: 20px 40px;
@@ -74,7 +72,6 @@
             justify-content: space-between;
             align-items: flex-start;
             z-index: 10;
-            transition: opacity 0.4s ease;
         }
 
         .system-title-box {
@@ -107,7 +104,6 @@
             margin-left: 20px;
         }
 
-        /* Main Clock Area */
         main {
             flex: 1;
             display: flex;
@@ -129,101 +125,145 @@
             gap: 8px;
         }
 
-        /* Card Unit (固定高さ・幅で絶対安定化) */
+        /* フリップカード本体 */
         .flip-unit {
             position: relative;
             width: 120px;
             height: 170px;
-            font-size: 120px;
-            font-weight: bold;
-            perspective: 1000px;
+            perspective: 400px;
             box-shadow: 0 10px 25px var(--shadow-color);
             border-radius: 6px;
+            background-color: var(--card-bg);
         }
 
         @media (min-width: 900px) {
             .flip-unit {
                 width: 150px;
                 height: 210px;
-                font-size: 150px;
             }
         }
 
         .seconds-group .flip-unit {
             width: 85px;
             height: 120px;
-            font-size: 85px;
         }
 
         @media (min-width: 900px) {
             .seconds-group .flip-unit {
                 width: 100px;
                 height: 140px;
-                font-size: 100px;
             }
         }
 
-        /* Card Half Halves */
-        .card-top, .card-bottom, .card-top-flip, .card-bottom-flip {
+        /* カードのパーツ（上下固定 ＆ めくれフラップ） */
+        .card-half {
             position: absolute;
             left: 0;
             width: 100%;
             height: 50%;
             overflow: hidden;
-            background-color: var(--card-bg);
             color: var(--card-text);
+            background-color: var(--card-bg);
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 130px;
+            font-weight: bold;
+            display: flex;
+            justify-content: center;
         }
 
-        .card-top, .card-top-flip {
+        @media (min-width: 900px) {
+            .card-half { font-size: 160px; }
+        }
+        .seconds-group .card-half {
+            font-size: 90px;
+        }
+        @media (min-width: 900px) {
+            .seconds-group .card-half { font-size: 105px; }
+        }
+
+        /* 上半分（固定） */
+        .card-top {
             top: 0;
             border-top-left-radius: 6px;
             border-top-right-radius: 6px;
+            align-items: flex-end;
             border-bottom: 1px solid rgba(0, 0, 0, 0.4);
         }
+        .card-top span {
+            transform: translateY(50%);
+        }
 
-        .card-bottom, .card-bottom-flip {
+        /* 下半分（固定） */
+        .card-bottom {
             bottom: 0;
             border-bottom-left-radius: 6px;
             border-bottom-right-radius: 6px;
+            align-items: flex-start;
+        }
+        .card-bottom span {
+            transform: translateY(-50%);
         }
 
-        /* Digit Alignment (上下ぴったり合わせ) */
-        .digit {
-            position: absolute;
-            left: 0;
-            width: 100%;
-            height: 200%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-family: 'Share Tech Mono', monospace;
-            line-height: 1;
-        }
-
-        .card-top .digit, .card-top-flip .digit {
+        /* 動くフラップ（めくれる上半分） */
+        .card-flipping {
             top: 0;
+            border-top-left-radius: 6px;
+            border-top-right-radius: 6px;
+            align-items: flex-end;
+            transform-origin: bottom;
+            transform-style: preserve-3d;
+            z-index: 20;
+            backface-visibility: hidden;
+        }
+        .card-flipping span {
+            transform: translateY(50%);
         }
 
-        .card-bottom .digit, .card-bottom-flip .digit {
-            bottom: -100%;
+        .fold-animation {
+            animation: flipFold 0.35s ease-in forwards;
         }
 
-        /* Hinges */
-        .flip-unit::before, .flip-unit::after {
+        @keyframes flipFold {
+            0% {
+                transform: rotateX(0deg);
+                background-color: var(--card-bg);
+            }
+            100% {
+                transform: rotateX(-180deg);
+                background-color: #1a1816;
+            }
+        }
+
+        /* 中央のスリット線 */
+        .flip-unit::before {
             content: "";
             position: absolute;
             top: 50%;
-            width: 6px;
-            height: 10px;
-            background-color: var(--border-color);
-            margin-top: -5px;
-            z-index: 20;
-            border-radius: 2px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 30;
+            margin-top: -1px;
+            pointer-events: none;
         }
-        .flip-unit::before { left: -3px; }
-        .flip-unit::after { right: -3px; }
 
-        /* Colons */
+        /* 左右のヒンジ金具 */
+        .flip-unit::after {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: -3px;
+            right: -3px;
+            height: 10px;
+            border-left: 6px solid var(--border-color);
+            border-right: 6px solid var(--border-color);
+            margin-top: -5px;
+            z-index: 31;
+            pointer-events: none;
+        }
+
+        /* コロン */
         .colon-container {
             display: flex;
             flex-direction: column;
@@ -241,38 +281,11 @@
             background-color: var(--accent-teal);
         }
 
-        /* Animations */
-        .card-top-flip {
-            transform-origin: bottom;
-            animation: flip-top 0.25s ease-in forwards;
-            z-index: 10;
-            backface-visibility: hidden;
-        }
-
-        .card-bottom-flip {
-            transform-origin: top;
-            animation: flip-bottom 0.25s ease-out 0.25s forwards;
-            z-index: 10;
-            backface-visibility: hidden;
-            transform: rotateX(90deg);
-        }
-
-        @keyframes flip-top {
-            0% { transform: rotateX(0deg); }
-            100% { transform: rotateX(-90deg); }
-        }
-
-        @keyframes flip-bottom {
-            0% { transform: rotateX(90deg); }
-            100% { transform: rotateX(0deg); }
-        }
-
-        /* Footer NieR Style */
+        /* フッター */
         footer {
             width: 100%;
             padding: 0 40px 20px 40px;
             z-index: 10;
-            transition: opacity 0.4s ease;
         }
 
         .nier-footer-box {
@@ -342,19 +355,13 @@
             background-size: 8px 6px;
             opacity: 0.6;
         }
-
-        .fade-out {
-            opacity: 0;
-            pointer-events: none;
-        }
     </style>
 </head>
 <body>
 
-    <!-- Header -->
     <header id="header-ui">
         <div class="system-title-box">
-            <div class="system-title">// SYSTEM : KAKEIBO_CLOCK [v2.5]</div>
+            <div class="system-title">// SYSTEM : KAKEIBO_CLOCK [v3.5]</div>
             <div class="date-display" id="date-text">----/--/-- (---)</div>
         </div>
         <div id="battery-box" style="font-size: 0.85rem; color: var(--text-sub);">
@@ -362,42 +369,53 @@
         </div>
     </header>
 
-    <!-- Main Clock -->
     <main>
         <div class="clock-container">
-            <!-- Hours -->
             <div class="group-container">
-                <div class="flip-unit" id="h1"><div class="card-top"><div class="digit">0</div></div><div class="card-bottom"><div class="digit">0</div></div></div>
-                <div class="flip-unit" id="h2"><div class="card-top"><div class="digit">0</div></div><div class="card-bottom"><div class="digit">0</div></div></div>
+                <div class="flip-unit" id="h1">
+                    <div class="card-half card-top"><span>0</span></div>
+                    <div class="card-half card-bottom"><span>0</span></div>
+                </div>
+                <div class="flip-unit" id="h2">
+                    <div class="card-half card-top"><span>0</span></div>
+                    <div class="card-half card-bottom"><span>0</span></div>
+                </div>
             </div>
 
-            <!-- Colon -->
             <div class="colon-container">
                 <div class="colon-dot"></div>
                 <div class="colon-dot"></div>
             </div>
 
-            <!-- Minutes -->
             <div class="group-container">
-                <div class="flip-unit" id="m1"><div class="card-top"><div class="digit">0</div></div><div class="card-bottom"><div class="digit">0</div></div></div>
-                <div class="flip-unit" id="m2"><div class="card-top"><div class="digit">0</div></div><div class="card-bottom"><div class="digit">0</div></div></div>
+                <div class="flip-unit" id="m1">
+                    <div class="card-half card-top"><span>0</span></div>
+                    <div class="card-half card-bottom"><span>0</span></div>
+                </div>
+                <div class="flip-unit" id="m2">
+                    <div class="card-half card-top"><span>0</span></div>
+                    <div class="card-half card-bottom"><span>0</span></div>
+                </div>
             </div>
 
-            <!-- Colon Sec -->
             <div class="colon-container sec-colon" id="sec-colon">
                 <div class="colon-dot"></div>
                 <div class="colon-dot"></div>
             </div>
 
-            <!-- Seconds -->
             <div class="group-container seconds-group" id="sec-group">
-                <div class="flip-unit" id="s1"><div class="card-top"><div class="digit">0</div></div><div class="card-bottom"><div class="digit">0</div></div></div>
-                <div class="flip-unit" id="s2"><div class="card-top"><div class="digit">0</div></div><div class="card-bottom"><div class="digit">0</div></div></div>
+                <div class="flip-unit" id="s1">
+                    <div class="card-half card-top"><span>0</span></div>
+                    <div class="card-half card-bottom"><span>0</span></div>
+                </div>
+                <div class="flip-unit" id="s2">
+                    <div class="card-half card-top"><span>0</span></div>
+                    <div class="card-half card-bottom"><span>0</span></div>
+                </div>
             </div>
         </div>
     </main>
 
-    <!-- Footer -->
     <footer id="footer-ui">
         <div class="nier-footer-box">
             <div class="footer-message">
@@ -418,35 +436,43 @@
 
         function updateDigit(id, newValue) {
             if (digitsPrev[id] === newValue) return;
+            const oldValue = digitsPrev[id];
             digitsPrev[id] = newValue;
 
             const unit = document.getElementById(id);
             if (!unit) return;
 
-            const topCard = unit.querySelector('.card-top');
-            const bottomCard = unit.querySelector('.card-bottom');
-            const currentVal = topCard.querySelector('.digit').textContent;
+            const topElem = unit.querySelector('.card-top span');
+            const bottomElem = unit.querySelector('.card-bottom span');
 
-            const oldFlips = unit.querySelectorAll('.card-top-flip, .card-bottom-flip');
-            oldFlips.forEach(el => el.remove());
+            if (oldValue === '') {
+                topElem.textContent = newValue;
+                bottomElem.textContent = newValue;
+                return;
+            }
 
-            const topFlip = document.createElement('div');
-            topFlip.className = 'card-top-flip';
-            topFlip.innerHTML = `<div class="digit">${currentVal}</div>`;
+            // 既存のアニメーションフラップがあれば削除
+            const oldFlipping = unit.querySelector('.card-flipping');
+            if (oldFlipping) oldFlipping.remove();
 
-            const bottomFlip = document.createElement('div');
-            bottomFlip.className = 'card-bottom-flip';
-            bottomFlip.innerHTML = `<div class="digit">${newValue}</div>`;
+            // 1. 上半分に古い数字をセットして手前にめくるフラップを作成
+            const flipping = document.createElement('div');
+            flipping.className = 'card-half card-flipping';
+            flipping.innerHTML = `<span>${oldValue}</span>`;
+            unit.appendChild(flipping);
 
-            topCard.querySelector('.digit').textContent = newValue;
+            // 2. 固定の上半分は即座に新しい数字に更新
+            topElem.textContent = newValue;
 
-            unit.appendChild(topFlip);
-            unit.appendChild(bottomFlip);
+            // 3. アニメーション開始
+            requestAnimationFrame(() => {
+                flipping.classList.add('fold-animation');
+            });
 
-            bottomFlip.addEventListener('animationend', () => {
-                bottomCard.querySelector('.digit').textContent = newValue;
-                topFlip.remove();
-                bottomFlip.remove();
+            // 4. めくり終わったら下半分を新しい数字に更新し、フラップを消す
+            flipping.addEventListener('animationend', () => {
+                bottomElem.textContent = newValue;
+                flipping.remove();
             });
         }
 
@@ -472,10 +498,9 @@
             if (dateEl) dateEl.textContent = dateStr;
         }
 
-        setInterval(updateClock, 1000);
+        setInterval(updateClock, 100);
         updateClock();
 
-        // Controls
         document.getElementById('sec-toggle-btn').addEventListener('click', () => {
             showSeconds = !showSeconds;
             document.getElementById('sec-group').style.display = showSeconds ? 'flex' : 'none';
@@ -494,7 +519,6 @@
             }
         });
 
-        // Battery
         if ('getBattery' in navigator) {
             navigator.getBattery().then(battery => {
                 function updateBattery() {
@@ -508,27 +532,6 @@
                 battery.addEventListener('chargingchange', updateBattery);
             });
         }
-
-        // Auto Hide UI
-        let hideTimer;
-        function resetHideTimer() {
-            const header = document.getElementById('header-ui');
-            const footer = document.getElementById('footer-ui');
-            if (header && footer) {
-                header.classList.remove('fade-out');
-                footer.classList.remove('fade-out');
-
-                clearTimeout(hideTimer);
-                hideTimer = setTimeout(() => {
-                    header.classList.add('fade-out');
-                    footer.classList.add('fade-out');
-                }, 5000);
-            }
-        }
-
-        window.addEventListener('mousemove', resetHideTimer);
-        window.addEventListener('touchstart', resetHideTimer);
-        resetHideTimer();
     </script>
 </body>
 </html>
