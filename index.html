@@ -15,7 +15,7 @@
             --grid-line: rgba(74, 69, 61, 0.08);
             --card-bg: #2B2825;
             --card-text: #E5DFC9;
-            --panel-bg: rgba(229, 223, 201, 0.85);
+            --panel-bg: rgba(229, 223, 201, 0.9);
             --accent-pink: #B35478;
             --accent-teal: #008D9B;
             --text-main: #3A352F;
@@ -24,13 +24,12 @@
             --shadow-color: rgba(43, 40, 37, 0.25);
         }
 
-        /* Dark Mode Theme */
         body.dark-mode {
             --bg-color: #1A1918;
             --grid-line: rgba(229, 223, 201, 0.05);
             --card-bg: #2B2825;
             --card-text: #E5DFC9;
-            --panel-bg: rgba(26, 25, 24, 0.85);
+            --panel-bg: rgba(26, 25, 24, 0.9);
             --accent-pink: #D86B93;
             --accent-teal: #00B4C5;
             --text-main: #D8D2C2;
@@ -46,13 +45,16 @@
             user-select: none;
         }
 
+        html, body {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+
         body {
             background-color: var(--bg-color);
             color: var(--text-main);
             font-family: 'Share Tech Mono', 'Zen Kaku Gothic New', monospace;
-            height: 100vh;
-            width: 100vw;
-            overflow: hidden;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
@@ -64,21 +66,10 @@
             transition: background-color 0.4s ease, color 0.4s ease;
         }
 
-        /* Scanline Overlay */
-        body::after {
-            content: "";
-            position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.03) 50%);
-            background-size: 100% 4px;
-            z-index: 100;
-            pointer-events: none;
-        }
-
         /* Header UI */
         header {
             width: 100%;
-            padding: 15px 40px;
+            padding: 20px 40px;
             display: flex;
             justify-content: space-between;
             align-items: flex-start;
@@ -116,7 +107,7 @@
             margin-left: 20px;
         }
 
-        /* Main Clock Section */
+        /* Main Clock Area */
         main {
             flex: 1;
             display: flex;
@@ -129,35 +120,50 @@
         .clock-container {
             display: flex;
             align-items: center;
-            gap: 1.5vw;
+            justify-content: center;
+            gap: 15px;
         }
 
         .group-container {
             display: flex;
-            gap: 0.6vw;
+            gap: 8px;
         }
 
-        /* Flip Unit Styles */
+        /* Card Unit (固定高さ・幅で絶対安定化) */
         .flip-unit {
             position: relative;
-            width: 13vw;
-            height: 18vw;
-            max-width: 180px;
-            max-height: 250px;
-            font-size: 13vw;
+            width: 120px;
+            height: 170px;
+            font-size: 120px;
             font-weight: bold;
             perspective: 1000px;
             box-shadow: 0 10px 25px var(--shadow-color);
             border-radius: 6px;
         }
 
-        @media (min-width: 1200px) {
+        @media (min-width: 900px) {
             .flip-unit {
-                font-size: 160px;
+                width: 150px;
+                height: 210px;
+                font-size: 150px;
             }
         }
 
-        /* Top & Bottom Cards */
+        .seconds-group .flip-unit {
+            width: 85px;
+            height: 120px;
+            font-size: 85px;
+        }
+
+        @media (min-width: 900px) {
+            .seconds-group .flip-unit {
+                width: 100px;
+                height: 140px;
+                font-size: 100px;
+            }
+        }
+
+        /* Card Half Halves */
         .card-top, .card-bottom, .card-top-flip, .card-bottom-flip {
             position: absolute;
             left: 0;
@@ -166,7 +172,6 @@
             overflow: hidden;
             background-color: var(--card-bg);
             color: var(--card-text);
-            text-align: center;
         }
 
         .card-top, .card-top-flip {
@@ -182,7 +187,7 @@
             border-bottom-right-radius: 6px;
         }
 
-        /* Digit Alignment (厳密なフォント中央配置) */
+        /* Digit Alignment (上下ぴったり合わせ) */
         .digit {
             position: absolute;
             left: 0;
@@ -200,7 +205,7 @@
         }
 
         .card-bottom .digit, .card-bottom-flip .digit {
-            bottom: 0;
+            bottom: -100%;
         }
 
         /* Hinges */
@@ -208,5 +213,322 @@
             content: "";
             position: absolute;
             top: 50%;
-            width: 8px;
-            height:
+            width: 6px;
+            height: 10px;
+            background-color: var(--border-color);
+            margin-top: -5px;
+            z-index: 20;
+            border-radius: 2px;
+        }
+        .flip-unit::before { left: -3px; }
+        .flip-unit::after { right: -3px; }
+
+        /* Colons */
+        .colon-container {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .colon-dot {
+            width: 14px;
+            height: 14px;
+            background-color: var(--accent-pink);
+        }
+
+        .colon-container.sec-colon .colon-dot {
+            background-color: var(--accent-teal);
+        }
+
+        /* Animations */
+        .card-top-flip {
+            transform-origin: bottom;
+            animation: flip-top 0.25s ease-in forwards;
+            z-index: 10;
+            backface-visibility: hidden;
+        }
+
+        .card-bottom-flip {
+            transform-origin: top;
+            animation: flip-bottom 0.25s ease-out 0.25s forwards;
+            z-index: 10;
+            backface-visibility: hidden;
+            transform: rotateX(90deg);
+        }
+
+        @keyframes flip-top {
+            0% { transform: rotateX(0deg); }
+            100% { transform: rotateX(-90deg); }
+        }
+
+        @keyframes flip-bottom {
+            0% { transform: rotateX(90deg); }
+            100% { transform: rotateX(0deg); }
+        }
+
+        /* Footer NieR Style */
+        footer {
+            width: 100%;
+            padding: 0 40px 20px 40px;
+            z-index: 10;
+            transition: opacity 0.4s ease;
+        }
+
+        .nier-footer-box {
+            position: relative;
+            background-color: var(--panel-bg);
+            border: 1px solid var(--border-color);
+            padding: 12px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nier-footer-box::before {
+            content: "";
+            position: absolute;
+            left: 4px;
+            top: 4px;
+            bottom: 4px;
+            width: 5px;
+            border-left: 2px solid var(--text-main);
+            border-right: 1px solid var(--text-main);
+        }
+
+        .nier-footer-box::after {
+            content: "";
+            position: absolute;
+            right: 6px;
+            bottom: 6px;
+            width: 6px;
+            height: 6px;
+            background-color: var(--text-main);
+        }
+
+        .footer-message {
+            font-size: 0.95rem;
+            letter-spacing: 1px;
+            padding-left: 10px;
+        }
+
+        .footer-controls {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .nier-btn {
+            background: transparent;
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+            padding: 6px 14px;
+            font-family: inherit;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .nier-btn:hover, .nier-btn:active {
+            background-color: var(--text-main);
+            color: var(--bg-color);
+        }
+
+        .dots-pattern-line {
+            width: 100%;
+            height: 6px;
+            margin-top: 6px;
+            background-image: radial-gradient(var(--text-main) 1.5px, transparent 1.5px);
+            background-size: 8px 6px;
+            opacity: 0.6;
+        }
+
+        .fade-out {
+            opacity: 0;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header id="header-ui">
+        <div class="system-title-box">
+            <div class="system-title">// SYSTEM : KAKEIBO_CLOCK [v2.5]</div>
+            <div class="date-display" id="date-text">----/--/-- (---)</div>
+        </div>
+        <div id="battery-box" style="font-size: 0.85rem; color: var(--text-sub);">
+            BATTERY: <span id="battery-text">--%</span>
+        </div>
+    </header>
+
+    <!-- Main Clock -->
+    <main>
+        <div class="clock-container">
+            <!-- Hours -->
+            <div class="group-container">
+                <div class="flip-unit" id="h1"><div class="card-top"><div class="digit">0</div></div><div class="card-bottom"><div class="digit">0</div></div></div>
+                <div class="flip-unit" id="h2"><div class="card-top"><div class="digit">0</div></div><div class="card-bottom"><div class="digit">0</div></div></div>
+            </div>
+
+            <!-- Colon -->
+            <div class="colon-container">
+                <div class="colon-dot"></div>
+                <div class="colon-dot"></div>
+            </div>
+
+            <!-- Minutes -->
+            <div class="group-container">
+                <div class="flip-unit" id="m1"><div class="card-top"><div class="digit">0</div></div><div class="card-bottom"><div class="digit">0</div></div></div>
+                <div class="flip-unit" id="m2"><div class="card-top"><div class="digit">0</div></div><div class="card-bottom"><div class="digit">0</div></div></div>
+            </div>
+
+            <!-- Colon Sec -->
+            <div class="colon-container sec-colon" id="sec-colon">
+                <div class="colon-dot"></div>
+                <div class="colon-dot"></div>
+            </div>
+
+            <!-- Seconds -->
+            <div class="group-container seconds-group" id="sec-group">
+                <div class="flip-unit" id="s1"><div class="card-top"><div class="digit">0</div></div><div class="card-bottom"><div class="digit">0</div></div></div>
+                <div class="flip-unit" id="s2"><div class="card-top"><div class="digit">0</div></div><div class="card-bottom"><div class="digit">0</div></div></div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer id="footer-ui">
+        <div class="nier-footer-box">
+            <div class="footer-message">
+                <span>// システム状態: 正常稼働中。</span>
+            </div>
+            <div class="footer-controls">
+                <button class="nier-btn" id="theme-btn">◐ テーマ切替</button>
+                <button class="nier-btn" id="sec-toggle-btn">⏱ 秒表示 ON/OFF</button>
+                <button class="nier-btn" id="fullscreen-btn">⛶ 全画面</button>
+            </div>
+        </div>
+        <div class="dots-pattern-line"></div>
+    </footer>
+
+    <script>
+        const digitsPrev = { h1: '', h2: '', m1: '', m2: '', s1: '', s2: '' };
+        let showSeconds = true;
+
+        function updateDigit(id, newValue) {
+            if (digitsPrev[id] === newValue) return;
+            digitsPrev[id] = newValue;
+
+            const unit = document.getElementById(id);
+            if (!unit) return;
+
+            const topCard = unit.querySelector('.card-top');
+            const bottomCard = unit.querySelector('.card-bottom');
+            const currentVal = topCard.querySelector('.digit').textContent;
+
+            const oldFlips = unit.querySelectorAll('.card-top-flip, .card-bottom-flip');
+            oldFlips.forEach(el => el.remove());
+
+            const topFlip = document.createElement('div');
+            topFlip.className = 'card-top-flip';
+            topFlip.innerHTML = `<div class="digit">${currentVal}</div>`;
+
+            const bottomFlip = document.createElement('div');
+            bottomFlip.className = 'card-bottom-flip';
+            bottomFlip.innerHTML = `<div class="digit">${newValue}</div>`;
+
+            topCard.querySelector('.digit').textContent = newValue;
+
+            unit.appendChild(topFlip);
+            unit.appendChild(bottomFlip);
+
+            bottomFlip.addEventListener('animationend', () => {
+                bottomCard.querySelector('.digit').textContent = newValue;
+                topFlip.remove();
+                bottomFlip.remove();
+            });
+        }
+
+        function updateClock() {
+            const now = new Date();
+            const h = String(now.getHours()).padStart(2, '0');
+            const m = String(now.getMinutes()).padStart(2, '0');
+            const s = String(now.getSeconds()).padStart(2, '0');
+
+            updateDigit('h1', h[0]);
+            updateDigit('h2', h[1]);
+            updateDigit('m1', m[0]);
+            updateDigit('m2', m[1]);
+
+            if (showSeconds) {
+                updateDigit('s1', s[0]);
+                updateDigit('s2', s[1]);
+            }
+
+            const days = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
+            const dateStr = `${now.getFullYear()}/${String(now.getMonth() + 1).padStart(2, '0')}/${String(now.getDate()).padStart(2, '0')} (${days[now.getDay()]})`;
+            const dateEl = document.getElementById('date-text');
+            if (dateEl) dateEl.textContent = dateStr;
+        }
+
+        setInterval(updateClock, 1000);
+        updateClock();
+
+        // Controls
+        document.getElementById('sec-toggle-btn').addEventListener('click', () => {
+            showSeconds = !showSeconds;
+            document.getElementById('sec-group').style.display = showSeconds ? 'flex' : 'none';
+            document.getElementById('sec-colon').style.display = showSeconds ? 'flex' : 'none';
+        });
+
+        document.getElementById('theme-btn').addEventListener('click', () => {
+            document.body.classList.toggle('dark-mode');
+        });
+
+        document.getElementById('fullscreen-btn').addEventListener('click', () => {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen().catch(() => {});
+            } else {
+                document.exitFullscreen().catch(() => {});
+            }
+        });
+
+        // Battery
+        if ('getBattery' in navigator) {
+            navigator.getBattery().then(battery => {
+                function updateBattery() {
+                    const level = Math.round(battery.level * 100);
+                    const charging = battery.charging ? '⚡' : '';
+                    const bEl = document.getElementById('battery-text');
+                    if (bEl) bEl.textContent = `${level}% ${charging}`;
+                }
+                updateBattery();
+                battery.addEventListener('levelchange', updateBattery);
+                battery.addEventListener('chargingchange', updateBattery);
+            });
+        }
+
+        // Auto Hide UI
+        let hideTimer;
+        function resetHideTimer() {
+            const header = document.getElementById('header-ui');
+            const footer = document.getElementById('footer-ui');
+            if (header && footer) {
+                header.classList.remove('fade-out');
+                footer.classList.remove('fade-out');
+
+                clearTimeout(hideTimer);
+                hideTimer = setTimeout(() => {
+                    header.classList.add('fade-out');
+                    footer.classList.add('fade-out');
+                }, 5000);
+            }
+        }
+
+        window.addEventListener('mousemove', resetHideTimer);
+        window.addEventListener('touchstart', resetHideTimer);
+        resetHideTimer();
+    </script>
+</body>
+</html>
