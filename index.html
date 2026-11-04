@@ -1,870 +1,212 @@
 <!DOCTYPE html>
-<html lang="ja" class="h-full">
+<html lang="ja">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tactical Flip Clock [ KAKEIBO UI STYLE ]</title>
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Google Fonts -->
+    <title>NieR Tactical Flip Clock</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:ital,wght@0,500;0,700;1,700&family=JetBrains+Mono:wght@400;700;800&family=Noto+Sans+JP:wght@400;700;900&display=swap" rel="stylesheet">
-    <!-- FontAwesome Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        tactical: {
-                            bg: '#E5DFC9',
-                            bgDark: '#D4CEB8',
-                            panel: '#DECFA9',
-                            carbon: '#2B2825',
-                            carbonLight: '#383431',
-                            pink: '#B35478',
-                            teal: '#008D9B',
-                            accent: '#8C8275',
-                            border: '#8F8577'
-                        }
-                    },
-                    fontFamily: {
-                        sans: ['Noto Sans JP', 'sans-serif'],
-                        mono: ['JetBrains Mono', 'monospace'],
-                        chakra: ['Chakra Petch', 'sans-serif']
-                    }
-                }
-            }
-        }
-    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Zen+Kaku+Gothic+New:wght@500;700&display=swap" rel="stylesheet">
     
     <style>
-        /* Modern Tactical Design Base */
-        body {
+        :root {
+            /* NieR Automata Color Scheme */
+            --bg-color: #E5DFC9;
+            --grid-line: rgba(74, 69, 61, 0.08);
+            --card-bg: #2B2825;
+            --card-text: #E5DFC9;
+            --panel-bg: rgba(229, 223, 201, 0.85);
+            --accent-pink: #B35478;
+            --accent-teal: #008D9B;
+            --text-main: #3A352F;
+            --text-sub: #7A7468;
+            --border-color: #A39D8D;
+            --shadow-color: rgba(43, 40, 37, 0.25);
+        }
+
+        /* Dark Mode Theme */
+        body.dark-mode {
+            --bg-color: #1A1918;
+            --grid-line: rgba(229, 223, 201, 0.05);
+            --card-bg: #2B2825;
+            --card-text: #E5DFC9;
+            --panel-bg: rgba(26, 25, 24, 0.85);
+            --accent-pink: #D86B93;
+            --accent-teal: #00B4C5;
+            --text-main: #D8D2C2;
+            --text-sub: #8C867A;
+            --border-color: #4A453D;
+            --shadow-color: rgba(0, 0, 0, 0.5);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
             user-select: none;
-            -webkit-user-select: none;
-            touch-action: manipulation;
-            background-color: #E5DFC9;
-            color: #2B2825;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            font-family: 'Share Tech Mono', 'Zen Kaku Gothic New', monospace;
+            height: 100vh;
+            width: 100vw;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            background-image: 
+                linear-gradient(var(--grid-line) 1px, transparent 1px),
+                linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+            background-size: 20px 20px;
             transition: background-color 0.4s ease, color 0.4s ease;
         }
 
-        /* Diagonal Stripe Background Texture (NieR / Tactical Style) */
-        .bg-tactical-stripes {
-            background-image: repeating-linear-gradient(
-                -45deg,
-                rgba(43, 40, 37, 0.04),
-                rgba(43, 40, 37, 0.04) 2px,
-                transparent 2px,
-                transparent 8px
-            );
+        /* Scanline Overlay */
+        body::after {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.03) 50%);
+            background-size: 100% 4px;
+            z-index: 100;
+            pointer-events: none;
         }
 
-        .bg-grid-lines {
-            background-size: 24px 24px;
-            background-image: 
-                linear-gradient(to right, rgba(43, 40, 37, 0.05) 1px, transparent 1px),
-                linear-gradient(to bottom, rgba(43, 40, 37, 0.05) 1px, transparent 1px);
+        /* Header UI */
+        header {
+            width: 100%;
+            padding: 15px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            z-index: 10;
+            transition: opacity 0.4s ease;
         }
 
-        /* Dark Theme Variations */
-        body.theme-dark {
-            background-color: #1A1918;
-            color: #E5DFC9;
-        }
-        body.theme-dark .bg-tactical-stripes {
-            background-image: repeating-linear-gradient(
-                -45deg,
-                rgba(229, 223, 201, 0.03),
-                rgba(229, 223, 201, 0.03) 2px,
-                transparent 2px,
-                transparent 8px
-            );
+        .system-title-box {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
         }
 
-        /* Mechanical Flip Clock CSS 3D Styling */
-        .flip-clock-unit {
-            position: relative;
-            perspective: 1000px;
+        .system-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
 
-        .flip-card {
-            position: relative;
+        .system-title::before {
+            content: "";
             display: inline-block;
-            border-radius: 4px;
-            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.35), 0 2px 4px rgba(0,0,0,0.2);
+            width: 12px;
+            height: 12px;
+            background-color: var(--accent-pink);
         }
 
-        /* Top & Bottom Cards Static Containers */
-        .card-top, .card-bottom, .card-flip-top, .card-flip-bottom {
+        .date-display {
+            font-size: 1rem;
+            color: var(--text-sub);
+            letter-spacing: 1px;
+            margin-left: 20px;
+        }
+
+        /* Main Clock Section */
+        main {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            z-index: 10;
+        }
+
+        .clock-container {
+            display: flex;
+            align-items: center;
+            gap: 1.5vw;
+        }
+
+        .group-container {
+            display: flex;
+            gap: 0.6vw;
+        }
+
+        /* Flip Unit Styles */
+        .flip-unit {
+            position: relative;
+            width: 13vw;
+            height: 18vw;
+            max-width: 180px;
+            max-height: 250px;
+            font-size: 13vw;
+            font-weight: bold;
+            perspective: 1000px;
+            box-shadow: 0 10px 25px var(--shadow-color);
+            border-radius: 6px;
+        }
+
+        @media (min-width: 1200px) {
+            .flip-unit {
+                font-size: 160px;
+            }
+        }
+
+        /* Top & Bottom Cards */
+        .card-top, .card-bottom, .card-top-flip, .card-bottom-flip {
             position: absolute;
             left: 0;
-            right: 0;
-            overflow: hidden;
-            backface-visibility: hidden;
-            -webkit-backface-visibility: hidden;
-            background: #2B2825;
-            color: #E5DFC9;
-            box-sizing: border-border;
-        }
-
-        body.theme-dark .card-top, 
-        body.theme-dark .card-bottom, 
-        body.theme-dark .card-flip-top, 
-        body.theme-dark .card-flip-bottom {
-            background: #0E0E0D;
-            color: #E5DFC9;
-            border-color: #3A3834;
-        }
-
-        /* Top Half Card */
-        .card-top, .card-flip-top {
-            top: 0;
+            width: 100%;
             height: 50%;
+            overflow: hidden;
+            background-color: var(--card-bg);
+            color: var(--card-text);
+            text-align: center;
+        }
+
+        .card-top, .card-top-flip {
+            top: 0;
             border-top-left-radius: 6px;
             border-top-right-radius: 6px;
-            border: 1px solid #383431;
-            border-bottom: 1px solid rgba(0, 0, 0, 0.7);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.4);
         }
 
-        /* Bottom Half Card */
-        .card-bottom, .card-flip-bottom {
+        .card-bottom, .card-bottom-flip {
             bottom: 0;
-            height: 50%;
             border-bottom-left-radius: 6px;
             border-bottom-right-radius: 6px;
-            border: 1px solid #383431;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
         }
 
-        /* Number positioning inside half cards */
-        .card-number-wrapper {
+        /* Digit Alignment (厳密なフォント中央配置) */
+        .digit {
             position: absolute;
-            left: 50%;
-            transform: translateX(-50%);
+            left: 0;
             width: 100%;
-            text-align: center;
-            font-family: 'JetBrains Mono', monospace;
-            font-weight: 800;
+            height: 200%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Share Tech Mono', monospace;
             line-height: 1;
         }
 
-        .card-top .card-number-wrapper, .card-flip-top .card-number-wrapper {
-            top: 10%;
+        .card-top .digit, .card-top-flip .digit {
+            top: 0;
         }
 
-        .card-bottom .card-number-wrapper, .card-flip-bottom .card-number-wrapper {
-            bottom: 10%;
+        .card-bottom .digit, .card-bottom-flip .digit {
+            bottom: 0;
         }
 
-        /* Center Seam / Hinge Shadow Effect */
-        .card-hinge {
+        /* Hinges */
+        .flip-unit::before, .flip-unit::after {
+            content: "";
             position: absolute;
             top: 50%;
-            left: 0;
-            right: 0;
-            height: 2px;
-            background: rgba(0, 0, 0, 0.85);
-            z-index: 10;
-            transform: translateY(-50%);
-            box-shadow: 0 1px 3px rgba(0,0,0,0.6);
-        }
-
-        /* Hinge side notches for mechanical feel */
-        .card-hinge::before, .card-hinge::after {
-            content: '';
-            position: absolute;
-            top: -4px;
-            width: 4px;
-            height: 10px;
-            background-color: #8F8577;
-            border-radius: 1px;
-        }
-        .card-hinge::before { left: -2px; }
-        .card-hinge::after { right: -2px; }
-
-        /* FLIP ANIMATIONS */
-        .card-flip-top {
-            transform-origin: bottom;
-            animation: flip-top-anim 0.35s ease-in forwards;
-            z-index: 5;
-        }
-
-        .card-flip-bottom {
-            transform-origin: top;
-            transform: rotateX(90deg);
-            animation: flip-bottom-anim 0.35s 0.35s ease-out forwards;
-            z-index: 5;
-        }
-
-        @keyframes flip-top-anim {
-            0% { transform: rotateX(0deg); }
-            100% { transform: rotateX(-90deg); }
-        }
-
-        @keyframes flip-bottom-anim {
-            0% { transform: rotateX(90deg); }
-            100% { transform: rotateX(0deg); }
-        }
-
-        /* Smooth UI Auto-hide */
-        .ui-element {
-            transition: opacity 0.4s ease, transform 0.4s ease;
-        }
-        .ui-hidden {
-            opacity: 0 !important;
-            pointer-events: none !important;
-            transform: translateY(6px);
-        }
-
-        /* Sharp Tactical Buttons */
-        .tactical-btn {
-            background-color: #2B2825;
-            color: #E5DFC9;
-            border: 1px solid #2B2825;
-            transition: all 0.15s ease;
-        }
-        .tactical-btn:hover {
-            background-color: #008D9B;
-            border-color: #008D9B;
-            color: #ffffff;
-        }
-        .tactical-btn:active {
-            transform: scale(0.97);
-        }
-
-        body.theme-dark .tactical-btn {
-            background-color: #E5DFC9;
-            color: #2B2825;
-            border-color: #E5DFC9;
-        }
-        body.theme-dark .tactical-btn:hover {
-            background-color: #008D9B;
-            color: #ffffff;
-            border-color: #008D9B;
-        }
-
-        /* NieR Style Bottom Footer Bar Component */
-        .nier-footer-bar {
-            background-color: rgba(222, 207, 169, 0.9);
-            border-top: 1px solid #2B2825;
-            border-bottom: 1px solid #2B2825;
-            position: relative;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-        }
-
-        body.theme-dark .nier-footer-bar {
-            background-color: rgba(35, 33, 31, 0.95);
-            border-color: #E5DFC9;
-        }
-
-        /* Left Thick Double Line Accent */
-        .nier-footer-bar::before {
-            content: '';
-            position: absolute;
-            left: 10px;
-            top: 6px;
-            bottom: 6px;
             width: 8px;
-            border-left: 3px solid #2B2825;
-            border-right: 2px solid #2B2825;
-            z-index: 2;
-        }
-
-        body.theme-dark .nier-footer-bar::before {
-            border-left-color: #E5DFC9;
-            border-right-color: #E5DFC9;
-        }
-
-        /* Right Bottom Corner Square Accent */
-        .nier-footer-bar::after {
-            content: '';
-            position: absolute;
-            right: 6px;
-            bottom: 4px;
-            width: 7px;
-            height: 7px;
-            background-color: #2B2825;
-        }
-
-        body.theme-dark .nier-footer-bar::after {
-            background-color: #E5DFC9;
-        }
-
-        /* Repeatable Triangle/Dot Motif Pattern below footer bar */
-        .nier-dots-pattern {
-            height: 12px;
-            width: 100%;
-            background-image: radial-gradient(#2B2825 1.5px, transparent 1.5px), radial-gradient(#2B2825 1.5px, transparent 1.5px);
-            background-size: 16px 12px;
-            background-position: 0 0, 8px 6px;
-            opacity: 0.75;
-        }
-
-        body.theme-dark .nier-dots-pattern {
-            background-image: radial-gradient(#E5DFC9 1.5px, transparent 1.5px), radial-gradient(#E5DFC9 1.5px, transparent 1.5px);
-        }
-    </style>
-</head>
-<body id="app-body" class="h-full w-full flex flex-col justify-between overflow-hidden relative font-sans bg-tactical-stripes bg-grid-lines">
-
-    <!-- TOP HEADER: NieR / Tactical Title & Date Bar -->
-    <header class="ui-element w-full p-4 md:p-5 flex flex-wrap justify-between items-center z-20 gap-4">
-        
-        <!-- Header Title Banner -->
-        <div class="flex items-center gap-3">
-            <div class="bg-tactical-carbon text-tactical-bg px-3 py-1 font-mono font-bold text-sm tracking-wider flex items-center gap-2 border border-tactical-carbon shadow-sm">
-                <span class="inline-block w-2 h-2 bg-tactical-teal"></span>
-                <span>// 置時計システム [ FLIP-CLOCK ]</span>
-            </div>
-            <div id="wakelock-status" class="text-xs font-mono px-2.5 py-1 border border-tactical-carbon/30 bg-tactical-bgDark/60 flex items-center gap-1.5 font-semibold">
-                <i class="fa-solid fa-bolt text-tactical-teal text-[10px]"></i>
-                <span id="wakelock-text">WAKE-LOCK: ACTIVE</span>
-            </div>
-            <!-- Added battery display element -->
-            <div id="battery-box" class="text-xs font-mono px-2.5 py-1 border border-tactical-carbon/30 bg-tactical-bgDark/60 flex items-center gap-1.5 font-semibold">
-                <i class="fa-solid fa-battery-three-quarters text-tactical-teal text-[10px]"></i>
-                <span id="battery-text">BATTERY: --%</span>
-            </div>
-        </div>
-
-        <!-- Date Frame Display (NieR style header bar) -->
-        <div class="flex items-center gap-2 font-mono text-sm md:text-lg border-2 border-tactical-carbon bg-tactical-bg/90 px-4 py-1.5 shadow-[3px_3px_0px_0px_rgba(43,40,37,1)]">
-            <span class="text-tactical-pink font-bold">// DATE</span>
-            <span class="text-tactical-carbon font-bold">[</span>
-            <span id="date-display" class="font-bold tracking-tight">2026/11/05 (木)</span>
-            <span class="text-tactical-carbon font-bold">]</span>
-        </div>
-    </header>
-
-    <!-- MAIN FLIP CLOCK CONTAINER -->
-    <main class="flex-1 flex items-center justify-center px-4 py-2 relative z-10 w-full max-w-7xl mx-auto">
-        <div class="flex items-center justify-center gap-2 sm:gap-4 md:gap-6 lg:gap-8 w-full">
-            
-            <!-- HOURS FLIP UNIT -->
-            <div class="flex items-center gap-1 sm:gap-2">
-                <!-- Tens Hour -->
-                <div id="unit-h1" class="flip-clock-unit">
-                    <div class="flip-card w-[12vw] h-[18vw] max-w-[130px] max-h-[195px] min-w-[70px] min-h-[105px]">
-                        <div class="card-top"><span class="card-number-wrapper text-[14vw] sm:text-[110px] md:text-[135px]">0</span></div>
-                        <div class="card-bottom"><span class="card-number-wrapper text-[14vw] sm:text-[110px] md:text-[135px]">0</span></div>
-                        <div class="card-hinge"></div>
-                    </div>
-                </div>
-                <!-- Ones Hour -->
-                <div id="unit-h2" class="flip-clock-unit">
-                    <div class="flip-card w-[12vw] h-[18vw] max-w-[130px] max-h-[195px] min-w-[70px] min-h-[105px]">
-                        <div class="card-top"><span class="card-number-wrapper text-[14vw] sm:text-[110px] md:text-[135px]">0</span></div>
-                        <div class="card-bottom"><span class="card-number-wrapper text-[14vw] sm:text-[110px] md:text-[135px]">0</span></div>
-                        <div class="card-hinge"></div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- COLON SEPARATOR -->
-            <div class="flex flex-col gap-3 sm:gap-5 justify-center items-center pb-2">
-                <div class="w-3 h-3 sm:w-4 sm:h-4 md:w-5 md:h-5 bg-tactical-pink shadow-sm"></div>
-                <div class="w-3 h-3 sm:w-4 sm:h-4 md:w-5 md:h-5 bg-tactical-pink shadow-sm"></div>
-            </div>
-
-            <!-- MINUTES FLIP UNIT -->
-            <div class="flex items-center gap-1 sm:gap-2">
-                <!-- Tens Minute -->
-                <div id="unit-m1" class="flip-clock-unit">
-                    <div class="flip-card w-[12vw] h-[18vw] max-w-[130px] max-h-[195px] min-w-[70px] min-h-[105px]">
-                        <div class="card-top"><span class="card-number-wrapper text-[14vw] sm:text-[110px] md:text-[135px]">0</span></div>
-                        <div class="card-bottom"><span class="card-number-wrapper text-[14vw] sm:text-[110px] md:text-[135px]">0</span></div>
-                        <div class="card-hinge"></div>
-                    </div>
-                </div>
-                <!-- Ones Minute -->
-                <div id="unit-m2" class="flip-clock-unit">
-                    <div class="flip-card w-[12vw] h-[18vw] max-w-[130px] max-h-[195px] min-w-[70px] min-h-[105px]">
-                        <div class="card-top"><span class="card-number-wrapper text-[14vw] sm:text-[110px] md:text-[135px]">0</span></div>
-                        <div class="card-bottom"><span class="card-number-wrapper text-[14vw] sm:text-[110px] md:text-[135px]">0</span></div>
-                        <div class="card-hinge"></div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- SECONDS FLIP UNIT (TOGGLEABLE) -->
-            <div id="seconds-group" class="flex items-center gap-2 sm:gap-4">
-                <!-- COLON SEPARATOR FOR SECONDS -->
-                <div class="flex flex-col gap-2 sm:gap-4 justify-center items-center pb-2">
-                    <div class="w-2 h-2 sm:w-3 sm:h-3 bg-tactical-teal opacity-90"></div>
-                    <div class="w-2 h-2 sm:w-3 sm:h-3 bg-tactical-teal opacity-90"></div>
-                </div>
-
-                <div class="flex items-center gap-1 sm:gap-2">
-                    <!-- Tens Second -->
-                    <div id="unit-s1" class="flip-clock-unit">
-                        <div class="flip-card w-[8vw] h-[12vw] max-w-[85px] max-h-[128px] min-w-[45px] min-h-[68px]">
-                            <div class="card-top"><span class="card-number-wrapper text-[9vw] sm:text-[75px] md:text-[90px]">0</span></div>
-                            <div class="card-bottom"><span class="card-number-wrapper text-[9vw] sm:text-[75px] md:text-[90px]">0</span></div>
-                            <div class="card-hinge"></div>
-                        </div>
-                    </div>
-                    <!-- Ones Second -->
-                    <div id="unit-s2" class="flip-clock-unit">
-                        <div class="flip-card w-[8vw] h-[12vw] max-w-[85px] max-h-[128px] min-w-[45px] min-h-[68px]">
-                            <div class="card-top"><span class="card-number-wrapper text-[9vw] sm:text-[75px] md:text-[90px]">0</span></div>
-                            <div class="card-bottom"><span class="card-number-wrapper text-[9vw] sm:text-[75px] md:text-[90px]">0</span></div>
-                            <div class="card-hinge"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- AM/PM BADGE (12H MODE) -->
-            <div id="ampm-badge" class="hidden flex-col font-chakra font-bold text-lg md:text-2xl text-tactical-pink ml-1">
-                <span id="ampm-text">AM</span>
-            </div>
-
-        </div>
-    </main>
-
-    <!-- FOOTER CONTAINER: NieR:Automata UI Bottom Bar & Motif Dots -->
-    <div class="ui-element w-full px-4 md:px-8 pb-4 z-20 flex flex-col gap-1">
-        
-        <!-- Main NieR Style Translucent Footer Bar -->
-        <footer class="nier-footer-bar w-full pl-7 pr-6 py-2.5 flex flex-wrap justify-between items-center gap-3 font-mono text-xs md:text-sm">
-            
-            <!-- System Status Message (Left) -->
-            <div class="flex items-center gap-3 text-tactical-carbon font-bold tracking-wide">
-                <span id="status-message" class="truncate">// システム: 現在時刻を表示中。システム正常稼働中。</span>
-            </div>
-
-            <!-- Game-style Helper Controls & Actions (Right) -->
-            <div class="flex items-center gap-4 md:gap-6 font-bold">
-                <!-- Theme Quick Switch -->
-                <button id="quick-theme-btn" class="flex items-center gap-1.5 hover:text-tactical-teal transition cursor-pointer" title="テーマ切り替え">
-                    <i class="fa-solid fa-circle-half-stroke"></i>
-                    <span>テーマ切り替え</span>
-                </button>
-
-                <!-- Fullscreen Toggle -->
-                <button id="fullscreen-btn" class="flex items-center gap-1.5 hover:text-tactical-teal transition cursor-pointer" title="全画面表示切替">
-                    <i class="fa-regular fa-square"></i>
-                    <span>全画面</span>
-                </button>
-
-                <!-- Settings Trigger -->
-                <button id="settings-open-btn" class="flex items-center gap-1.5 hover:text-tactical-pink transition cursor-pointer" title="設定を開く">
-                    <i class="fa-solid fa-gear"></i>
-                    <span>設定</span>
-                </button>
-            </div>
-        </footer>
-
-        <!-- Motif Line: Decorative Dots & Horizontal Rule -->
-        <div class="w-full flex flex-col items-center gap-0.5 opacity-80">
-            <div class="w-full border-b border-tactical-carbon/60"></div>
-            <div class="nier-dots-pattern"></div>
-        </div>
-
-    </div>
-
-    <!-- CONFIGURATION MODAL (NieR Tactical Window Style) -->
-    <div id="settings-modal" class="fixed inset-0 bg-tactical-carbon/70 backdrop-blur-sm z-50 flex justify-center items-center p-4 opacity-0 pointer-events-none transition-opacity duration-300">
-        <div class="bg-tactical-bg border-4 border-tactical-carbon text-tactical-carbon w-full max-w-lg p-6 shadow-[8px_8px_0px_0px_rgba(43,40,37,1)] relative font-sans">
-            
-            <!-- Modal Header -->
-            <div class="flex justify-between items-center pb-3 mb-5 border-b-2 border-tactical-carbon">
-                <div class="font-mono font-bold text-base md:text-lg flex items-center gap-2">
-                    <span class="text-tactical-pink">//</span>
-                    <span>SYSTEM CONFIGURATION</span>
-                </div>
-                <button id="settings-close-btn" class="w-8 h-8 flex justify-center items-center bg-tactical-carbon text-tactical-bg hover:bg-tactical-pink transition font-mono font-bold">
-                    ✕
-                </button>
-            </div>
-
-            <!-- Settings Content Form -->
-            <div class="space-y-5 font-mono text-sm">
-                
-                <!-- Theme Presets -->
-                <div>
-                    <label class="block text-xs font-bold text-tactical-accent mb-2">// COLOR PALETTE</label>
-                    <div class="grid grid-cols-2 gap-2.5">
-                        <button data-theme="sand" class="theme-option-btn border-2 border-tactical-carbon p-2.5 text-left bg-tactical-bg font-bold flex items-center justify-between hover:border-tactical-teal">
-                            <span>サンドベージュ [標準]</span>
-                            <span class="w-4 h-4 bg-[#E5DFC9] border border-tactical-carbon"></span>
-                        </button>
-                        <button data-theme="dark" class="theme-option-btn border-2 border-tactical-carbon p-2.5 text-left bg-[#1A1918] text-[#E5DFC9] font-bold flex items-center justify-between hover:border-tactical-teal">
-                            <span>ダークタクティカル</span>
-                            <span class="w-4 h-4 bg-[#1A1918] border border-[#E5DFC9]"></span>
-                        </button>
-                    </div>
-                </div>
-
-                <!-- Display Options -->
-                <div class="space-y-3 pt-3 border-t border-tactical-carbon/20">
-                    <label class="block text-xs font-bold text-tactical-accent mb-1">// DISPLAY & FORMAT</label>
-                    
-                    <!-- Seconds Toggle -->
-                    <div class="flex justify-between items-center bg-tactical-bgDark/40 p-2.5 border border-tactical-carbon/30">
-                        <span class="font-bold">秒表示 (SECONDS)</span>
-                        <input type="checkbox" id="toggle-seconds" class="w-5 h-5 accent-tactical-teal cursor-pointer" checked>
-                    </div>
-
-                    <!-- 12H / 24H Format -->
-                    <div class="flex justify-between items-center bg-tactical-bgDark/40 p-2.5 border border-tactical-carbon/30">
-                        <span class="font-bold">12時間表記 (AM/PM)</span>
-                        <input type="checkbox" id="toggle-12h" class="w-5 h-5 accent-tactical-teal cursor-pointer">
-                    </div>
-
-                    <!-- Wake Lock -->
-                    <div class="flex justify-between items-center bg-tactical-bgDark/40 p-2.5 border border-tactical-carbon/30">
-                        <div>
-                            <div class="font-bold">スリープ防止 (WAKE-LOCK)</div>
-                            <div class="text-[10px] text-tactical-accent">画面の自動消灯を維持・防止します</div>
-                        </div>
-                        <input type="checkbox" id="toggle-wakelock" class="w-5 h-5 accent-tactical-teal cursor-pointer" checked>
-                    </div>
-
-                    <!-- Auto Hide UI -->
-                    <div class="flex justify-between items-center bg-tactical-bgDark/40 p-2.5 border border-tactical-carbon/30">
-                        <div>
-                            <div class="font-bold">コントロール自動隠し</div>
-                            <div class="text-[10px] text-tactical-accent">5秒後にヘッダー・操作キーをフェードアウト</div>
-                        </div>
-                        <input type="checkbox" id="toggle-autohide" class="w-5 h-5 accent-tactical-teal cursor-pointer" checked>
-                    </div>
-                </div>
-
-            </div>
-
-            <!-- Modal Footer button -->
-            <div class="mt-6 pt-3 border-t-2 border-tactical-carbon">
-                <button id="settings-apply-btn" class="w-full py-2.5 bg-tactical-carbon text-tactical-bg hover:bg-tactical-teal font-mono font-bold transition text-center shadow-md">
-                    // EXECUTE & SAVE
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <!-- FLIP CLOCK LOGIC SCRIPT -->
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            // Configuration & State
-            let state = {
-                theme: localStorage.getItem('tactical_clock_theme') || 'sand',
-                showSeconds: localStorage.getItem('tactical_clock_seconds') !== 'false',
-                is12h: localStorage.getItem('tactical_clock_12h') === 'true',
-                wakeLockEnabled: localStorage.getItem('tactical_clock_wakelock') !== 'false',
-                autoHideUI: localStorage.getItem('tactical_clock_autohide') !== 'false'
-            };
-
-            // Previous values to detect flip state changes
-            let currentDigits = {
-                h1: null, h2: null,
-                m1: null, m2: null,
-                s1: null, s2: null
-            };
-
-            const dayNames = ['日', '月', '火', '水', '木', '金', '土'];
-            let wakeLock = null;
-            let idleTimer = null;
-
-            // DOM Elements
-            const appBody = document.getElementById('app-body');
-            const dateDisplay = document.getElementById('date-display');
-            const secondsGroup = document.getElementById('seconds-group');
-            const ampmBadge = document.getElementById('ampm-badge');
-            const ampmText = document.getElementById('ampm-text');
-            const wakelockStatus = document.getElementById('wakelock-status');
-            const wakelockText = document.getElementById('wakelock-text');
-            
-            const settingsModal = document.getElementById('settings-modal');
-            const settingsOpenBtn = document.getElementById('settings-open-btn');
-            const settingsCloseBtn = document.getElementById('settings-close-btn');
-            const settingsApplyBtn = document.getElementById('settings-apply-btn');
-            const fullscreenBtn = document.getElementById('fullscreen-btn');
-            const quickThemeBtn = document.getElementById('quick-theme-btn');
-
-            const toggleSeconds = document.getElementById('toggle-seconds');
-            const toggle12h = document.getElementById('toggle-12h');
-            const toggleWakelock = document.getElementById('toggle-wakelock');
-            const toggleAutoHide = document.getElementById('toggle-autohide');
-
-            const uiElements = document.querySelectorAll('.ui-element');
-
-            // --- FLIP CARD ENGINE ---
-            function flipUnit(unitId, newValue) {
-                const unitElem = document.getElementById(unitId);
-                if (!unitElem) return;
-
-                const cardElem = unitElem.querySelector('.flip-card');
-                const topNumber = cardElem.querySelector('.card-top .card-number-wrapper');
-                const bottomNumber = cardElem.querySelector('.card-bottom .card-number-wrapper');
-
-                const oldValue = topNumber.textContent;
-                if (oldValue === String(newValue)) return; // Value unchanged
-
-                // Remove prior temporary flip elements if rapidly updating
-                const existingFlips = cardElem.querySelectorAll('.card-flip-top, .card-flip-bottom');
-                existingFlips.forEach(el => el.remove());
-
-                // Create Animated Flip Flaps
-                const flipTop = document.createElement('div');
-                flipTop.className = 'card-flip-top';
-                flipTop.innerHTML = `<span class="card-number-wrapper ${topNumber.className}">${oldValue}</span>`;
-
-                const flipBottom = document.createElement('div');
-                flipBottom.className = 'card-flip-bottom';
-                flipBottom.innerHTML = `<span class="card-number-wrapper ${bottomNumber.className}">${newValue}</span>`;
-
-                // Update Static Cards Value
-                topNumber.textContent = newValue;
-
-                // Append Flaps & Clean up on animation end
-                cardElem.appendChild(flipTop);
-                cardElem.appendChild(flipBottom);
-
-                setTimeout(() => {
-                    bottomNumber.textContent = newValue;
-                }, 350);
-
-                setTimeout(() => {
-                    flipTop.remove();
-                    flipBottom.remove();
-                }, 700);
-            }
-
-            // --- MAIN TICKER ---
-            function updateClock() {
-                const now = new Date();
-
-                // 1. Date Header
-                const year = now.getFullYear();
-                const month = String(now.getMonth() + 1).padStart(2, '0');
-                const date = String(now.getDate()).padStart(2, '0');
-                const day = dayNames[now.getDay()];
-                dateDisplay.textContent = `${year}/${month}/${date} (${day})`;
-
-                // 2. Hours & Minutes Calculation
-                let hours = now.getHours();
-                const minutes = now.getMinutes();
-                const seconds = now.getSeconds();
-
-                if (state.is12h) {
-                    const ampm = hours >= 12 ? 'PM' : 'AM';
-                    hours = hours % 12;
-                    hours = hours ? hours : 12;
-                    ampmText.textContent = ampm;
-                    ampmBadge.classList.remove('hidden');
-                    ampmBadge.classList.add('flex');
-                } else {
-                    ampmBadge.classList.add('hidden');
-                    ampmBadge.classList.remove('flex');
-                }
-
-                const hStr = String(hours).padStart(2, '0');
-                const mStr = String(minutes).padStart(2, '0');
-                const sStr = String(seconds).padStart(2, '0');
-
-                // Trigger Mechanical Flips if digits modified
-                flipUnit('unit-h1', hStr[0]);
-                flipUnit('unit-h2', hStr[1]);
-                flipUnit('unit-m1', mStr[0]);
-                flipUnit('unit-m2', mStr[1]);
-
-                if (state.showSeconds) {
-                    flipUnit('unit-s1', sStr[0]);
-                    flipUnit('unit-s2', sStr[1]);
-                }
-            }
-
-            // --- RENDER & STATE APPLY ---
-            function applyState() {
-                // Theme Handling
-                if (state.theme === 'dark') {
-                    appBody.classList.add('theme-dark');
-                } else {
-                    appBody.classList.remove('theme-dark');
-                }
-
-                // Seconds Toggle Visibility
-                if (state.showSeconds) {
-                    secondsGroup.classList.remove('hidden');
-                    secondsGroup.classList.add('flex');
-                } else {
-                    secondsGroup.classList.add('hidden');
-                    secondsGroup.classList.remove('flex');
-                }
-
-                // Update Inputs
-                toggleSeconds.checked = state.showSeconds;
-                toggle12h.checked = state.is12h;
-                toggleWakelock.checked = state.wakeLockEnabled;
-                toggleAutoHide.checked = state.autoHideUI;
-
-                // Theme Active Highlight
-                document.querySelectorAll('.theme-option-btn').forEach(btn => {
-                    const isSelected = btn.getAttribute('data-theme') === state.theme;
-                    btn.classList.toggle('border-tactical-pink', isSelected);
-                    btn.classList.toggle('ring-1', isSelected);
-                    btn.classList.toggle('ring-tactical-pink', isSelected);
-                });
-
-                // Wake Lock Handling
-                if (state.wakeLockEnabled) {
-                    requestWakeLock();
-                } else {
-                    releaseWakeLock();
-                }
-            }
-
-            // --- WAKE LOCK API ---
-            async function requestWakeLock() {
-                if ('wakeLock' in navigator && state.wakeLockEnabled) {
-                    try {
-                        wakeLock = await navigator.wakeLock.request('screen');
-                        wakelockStatus.classList.remove('opacity-40');
-                        wakelockText.textContent = 'WAKE-LOCK: ACTIVE';
-                    } catch (err) {
-                        wakelockStatus.classList.add('opacity-40');
-                        wakelockText.textContent = 'WAKE-LOCK: OFF';
-                    }
-                }
-            }
-
-            function releaseWakeLock() {
-                if (wakeLock !== null) {
-                    wakeLock.release().then(() => {
-                        wakeLock = null;
-                        wakelockStatus.classList.add('opacity-40');
-                        wakelockText.textContent = 'WAKE-LOCK: OFF';
-                    });
-                }
-            }
-
-            document.addEventListener('visibilitychange', () => {
-                if (wakeLock !== null && document.visibilityState === 'visible') {
-                    requestWakeLock();
-                }
-            });
-
-            // --- AUTO HIDE CONTROLS ---
-            function resetIdleTimer() {
-                uiElements.forEach(el => el.classList.remove('ui-hidden'));
-                document.body.style.cursor = 'default';
-
-                clearTimeout(idleTimer);
-
-                if (state.autoHideUI && !settingsModal.classList.contains('opacity-100')) {
-                    idleTimer = setTimeout(() => {
-                        uiElements.forEach(el => el.classList.add('ui-hidden'));
-                        document.body.style.cursor = 'none';
-                    }, 5000);
-                }
-            }
-
-            ['mousemove', 'touchstart', 'click', 'keydown'].forEach(evt => {
-                window.addEventListener(evt, resetIdleTimer);
-            });
-
-            // --- BATTERY STATUS API ---
-            if ('getBattery' in navigator) {
-                navigator.getBattery().then(battery => {
-                    function updateBatteryInfo() {
-                        const level = Math.round(battery.level * 100);
-                        const isCharging = battery.charging;
-                        const batteryBox = document.getElementById('battery-box');
-                        const batteryText = document.getElementById('battery-text');
-                        
-                        if (batteryText) {
-                            batteryText.textContent = `${level}% ${isCharging ? '[ AC ]' : ''}`;
-                        }
-                    }
-                    updateBatteryInfo();
-                    battery.addEventListener('levelchange', updateBatteryInfo);
-                    battery.addEventListener('chargingchange', updateBatteryInfo);
-                }).catch(() => {
-                    const batteryBox = document.getElementById('battery-box');
-                    if (batteryBox) batteryBox.style.display = 'none';
-                });
-            } else {
-                const batteryBox = document.getElementById('battery-box');
-                if (batteryBox) batteryBox.style.display = 'none';
-            }
-
-            // --- EVENT LISTENERS ---
-            function openModal() {
-                settingsModal.classList.remove('opacity-0', 'pointer-events-none');
-                settingsModal.classList.add('opacity-100');
-            }
-
-            function closeModal() {
-                settingsModal.classList.remove('opacity-100');
-                settingsModal.classList.add('opacity-0', 'pointer-events-none');
-                resetIdleTimer();
-            }
-
-            settingsOpenBtn.addEventListener('click', openModal);
-            settingsCloseBtn.addEventListener('click', closeModal);
-            settingsApplyBtn.addEventListener('click', closeModal);
-
-            // Theme Buttons
-            document.querySelectorAll('.theme-option-btn').forEach(btn => {
-                btn.addEventListener('click', () => {
-                    state.theme = btn.getAttribute('data-theme');
-                    localStorage.setItem('tactical_clock_theme', state.theme);
-                    applyState();
-                });
-            });
-
-            // Quick Theme Switcher Button in Footer
-            quickThemeBtn.addEventListener('click', () => {
-                state.theme = state.theme === 'sand' ? 'dark' : 'sand';
-                localStorage.setItem('tactical_clock_theme', state.theme);
-                applyState();
-            });
-
-            // Checkbox Events
-            toggleSeconds.addEventListener('change', (e) => {
-                state.showSeconds = e.target.checked;
-                localStorage.setItem('tactical_clock_seconds', state.showSeconds);
-                applyState();
-            });
-
-            toggle12h.addEventListener('change', (e) => {
-                state.is12h = e.target.checked;
-                localStorage.setItem('tactical_clock_12h', state.is12h);
-                applyState();
-                updateClock();
-            });
-
-            toggleWakelock.addEventListener('change', (e) => {
-                state.wakeLockEnabled = e.target.checked;
-                localStorage.setItem('tactical_clock_wakelock', state.wakeLockEnabled);
-                applyState();
-            });
-
-            toggleAutoHide.addEventListener('change', (e) => {
-                state.autoHideUI = e.target.checked;
-                localStorage.setItem('tactical_clock_autohide', state.autoHideUI);
-                applyState();
-                resetIdleTimer();
-            });
-
-            // Fullscreen
-            fullscreenBtn.addEventListener('click', () => {
-                if (!document.fullscreenElement) {
-                    document.documentElement.requestFullscreen().catch(() => {});
-                } else {
-                    if (document.exitFullscreen) document.exitFullscreen();
-                }
-            });
-
-            // Initialize
-            updateClock();
-            applyState();
-            resetIdleTimer();
-            setInterval(updateClock, 1000);
-        });
-    </script>
-</body>
-</html>
+            height:
