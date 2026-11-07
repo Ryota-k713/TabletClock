@@ -70,38 +70,42 @@
             padding: 20px 40px;
             display: flex;
             justify-content: space-between;
-            align-items: flex-start;
+            align-items: center;
             z-index: 10;
         }
 
         .system-title-box {
             display: flex;
             flex-direction: column;
-            gap: 4px;
+            gap: 6px;
         }
 
         .system-title {
-            font-size: 1.1rem;
+            font-size: 0.95rem;
             font-weight: 700;
             letter-spacing: 2px;
             display: flex;
             align-items: center;
             gap: 8px;
+            color: var(--text-sub);
         }
 
         .system-title::before {
             content: "";
             display: inline-block;
-            width: 12px;
-            height: 12px;
+            width: 10px;
+            height: 10px;
             background-color: var(--accent-pink);
         }
 
+        /* 日付を大きく強調したスタイル */
         .date-display {
-            font-size: 1rem;
-            color: var(--text-sub);
-            letter-spacing: 1px;
-            margin-left: 20px;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--text-main);
+            letter-spacing: 2px;
+            margin-left: 18px;
+            font-family: 'Share Tech Mono', monospace;
         }
 
         main {
@@ -361,10 +365,10 @@
 
     <header id="header-ui">
         <div class="system-title-box">
-            <div class="system-title">// SYSTEM : KAKEIBO_CLOCK [v3.5]</div>
+            <div class="system-title">// SYSTEM : KAKEIBO_CLOCK [v3.6]</div>
             <div class="date-display" id="date-text">----/--/-- (---)</div>
         </div>
-        <div id="battery-box" style="font-size: 0.85rem; color: var(--text-sub);">
+        <div id="battery-box" style="font-size: 0.95rem; color: var(--text-sub); font-family: 'Share Tech Mono', monospace;">
             BATTERY: <span id="battery-text">--%</span>
         </div>
     </header>
@@ -451,25 +455,20 @@
                 return;
             }
 
-            // 既存のアニメーションフラップがあれば削除
             const oldFlipping = unit.querySelector('.card-flipping');
             if (oldFlipping) oldFlipping.remove();
 
-            // 1. 上半分に古い数字をセットして手前にめくるフラップを作成
             const flipping = document.createElement('div');
             flipping.className = 'card-half card-flipping';
             flipping.innerHTML = `<span>${oldValue}</span>`;
             unit.appendChild(flipping);
 
-            // 2. 固定の上半分は即座に新しい数字に更新
             topElem.textContent = newValue;
 
-            // 3. アニメーション開始
             requestAnimationFrame(() => {
                 flipping.classList.add('fold-animation');
             });
 
-            // 4. めくり終わったら下半分を新しい数字に更新し、フラップを消す
             flipping.addEventListener('animationend', () => {
                 bottomElem.textContent = newValue;
                 flipping.remove();
