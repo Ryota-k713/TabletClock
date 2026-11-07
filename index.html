@@ -68,7 +68,7 @@
         /* ヘッダー */
         header {
             width: 100%;
-            padding: 20px 40px;
+            padding: 16px 32px;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -82,7 +82,7 @@
         }
 
         .system-title {
-            font-size: 0.9rem;
+            font-size: 0.95rem;
             font-weight: 700;
             letter-spacing: 2px;
             display: flex;
@@ -100,7 +100,7 @@
         }
 
         .date-display {
-            font-size: 2rem;
+            font-size: 2.1rem;
             font-weight: 700;
             color: var(--text-main);
             letter-spacing: 2px;
@@ -108,7 +108,7 @@
             font-family: 'Share Tech Mono', monospace;
         }
 
-        /* メインエリア（最大限拡大） */
+        /* メインエリア（時間とポモドーロの間隔を広く設定） */
         main {
             flex: 1;
             display: flex;
@@ -116,36 +116,40 @@
             justify-content: center;
             align-items: center;
             width: 100%;
-            gap: 28px;
+            padding: 0 16px;
+            gap: 45px; /* 時間とポモドーロの間隔を広げました */
             z-index: 10;
         }
 
+        /* 左右限界まで幅を広げた時計コンテナ */
         .clock-container {
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 16px;
+            width: 100%;
+            max-width: 1100px; /* 10インチ左右いっぱいに設定 */
+            gap: 20px;
         }
 
         .group-container {
             display: flex;
-            gap: 10px;
+            gap: 12px;
         }
 
-        /* 時計カードをさらに大型化 */
+        /* 時計カードの極限拡大 */
         .flip-unit {
             position: relative;
-            width: 160px;
-            height: 230px;
+            width: 175px;
+            height: 245px;
             perspective: 500px;
-            box-shadow: 0 12px 30px var(--shadow-color);
+            box-shadow: 0 14px 35px var(--shadow-color);
             border-radius: 8px;
             background-color: var(--card-bg);
         }
 
         .seconds-group .flip-unit {
-            width: 105px;
-            height: 150px;
+            width: 115px;
+            height: 165px;
         }
 
         /* 数字フォントの超大型化 */
@@ -158,14 +162,14 @@
             color: var(--card-text);
             background-color: var(--card-bg);
             font-family: 'Share Tech Mono', monospace;
-            font-size: 185px;
+            font-size: 200px;
             font-weight: bold;
             display: flex;
             justify-content: center;
         }
 
         .seconds-group .card-half {
-            font-size: 120px;
+            font-size: 130px;
         }
 
         .card-top {
@@ -233,31 +237,31 @@
             pointer-events: none;
         }
 
-        /* コロン（中央の点）のカラーライン等を排除し統一感を持たせる */
+        /* コロン */
         .colon-container {
             display: flex;
             flex-direction: column;
             justify-content: center;
-            gap: 22px;
+            gap: 24px;
         }
 
         .colon-dot {
-            width: 14px;
-            height: 14px;
+            width: 16px;
+            height: 16px;
             background-color: var(--text-main);
             opacity: 0.8;
         }
 
-        /* --- ポモドーロタイマーパネル（大サイズ化） --- */
+        /* ポモドーロタイマーパネル（左右いっぱいに拡大） */
         .pomodoro-panel {
-            width: 90%;
-            max-width: 900px;
+            width: 100%;
+            max-width: 1080px; /* 時計の幅に合わせて左右余白を最小化 */
             background-color: var(--panel-bg);
             border: 1px solid var(--border-color);
-            padding: 18px 32px;
+            padding: 20px 36px;
             display: flex;
             flex-direction: column;
-            gap: 12px;
+            gap: 14px;
             box-shadow: 0 6px 20px var(--shadow-color);
             backdrop-filter: blur(4px);
         }
@@ -266,20 +270,20 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            font-size: 1.05rem;
+            font-size: 1.1rem;
             letter-spacing: 1.5px;
         }
 
         .pomodoro-time {
             font-family: 'Share Tech Mono', monospace;
-            font-size: 1.6rem;
+            font-size: 1.8rem;
             font-weight: bold;
             color: var(--accent-pink);
         }
 
         .pomo-meter-track {
             width: 100%;
-            height: 16px;
+            height: 18px;
             background-color: rgba(0, 0, 0, 0.15);
             border: 1px solid var(--border-color);
             position: relative;
@@ -299,13 +303,13 @@
         .pomodoro-controls {
             display: flex;
             justify-content: flex-end;
-            gap: 16px;
+            gap: 18px;
         }
 
         /* フッター */
         footer {
             width: 100%;
-            padding: 0 40px 20px 40px;
+            padding: 0 32px 18px 32px;
             z-index: 10;
         }
 
@@ -356,9 +360,9 @@
             background: transparent;
             border: 1px solid var(--border-color);
             color: var(--text-main);
-            padding: 8px 18px;
+            padding: 8px 20px;
             font-family: inherit;
-            font-size: 0.95rem;
+            font-size: 1rem;
             cursor: pointer;
             transition: all 0.2s ease;
         }
@@ -382,7 +386,7 @@
 
     <header id="header-ui">
         <div class="system-title-box">
-            <div class="system-title">// SYSTEM : KAKEIBO_CLOCK [v4.0]</div>
+            <div class="system-title">// SYSTEM : KAKEIBO_CLOCK [v4.1]</div>
             <div class="date-display" id="date-text">----/--/-- (---)</div>
         </div>
         <div id="battery-box" style="font-size: 1.1rem; color: var(--text-sub); font-family: 'Share Tech Mono', monospace;">
@@ -391,7 +395,7 @@
     </header>
 
     <main>
-        <!-- パタパタ時計（大サイズ） -->
+        <!-- パタパタ時計（左右拡大） -->
         <div class="clock-container">
             <div class="group-container">
                 <div class="flip-unit" id="h1"><div class="card-half card-top"><span>0</span></div><div class="card-half card-bottom"><span>0</span></div></div>
@@ -419,7 +423,7 @@
             </div>
         </div>
 
-        <!-- ポモドーロタイマーパネル（大サイズ） -->
+        <!-- ポモドーロタイマーパネル（左右拡大 ＆ 間隔広め） -->
         <div class="pomodoro-panel">
             <div class="pomodoro-header">
                 <span>// POMODORO TIMER (30 MIN)</span>
@@ -439,235 +443,3 @@
     <footer id="footer-ui">
         <div class="nier-footer-box">
             <div class="footer-message" id="pomo-status-msg">
-                <span>// システム状態: 正常稼働中。集中タスク実行待機中。</span>
-            </div>
-            <div class="footer-controls">
-                <button class="nier-btn" id="theme-btn">◐ テーマ切替</button>
-                <button class="nier-btn" id="sec-toggle-btn">⏱ 秒表示 ON/OFF</button>
-                <button class="nier-btn" id="fullscreen-btn">⛶ 全画面</button>
-            </div>
-        </div>
-        <div class="dots-pattern-line"></div>
-    </footer>
-
-    <script>
-        const digitsPrev = { h1: '', h2: '', m1: '', m2: '', s1: '', s2: '' };
-        let showSeconds = true;
-
-        function updateDigit(id, newValue) {
-            if (digitsPrev[id] === newValue) return;
-            const oldValue = digitsPrev[id];
-            digitsPrev[id] = newValue;
-
-            const unit = document.getElementById(id);
-            if (!unit) return;
-
-            const topElem = unit.querySelector('.card-top span');
-            const bottomElem = unit.querySelector('.card-bottom span');
-
-            if (oldValue === '') {
-                topElem.textContent = newValue;
-                bottomElem.textContent = newValue;
-                return;
-            }
-
-            const oldFlipping = unit.querySelector('.card-flipping');
-            if (oldFlipping) oldFlipping.remove();
-
-            const flipping = document.createElement('div');
-            flipping.className = 'card-half card-flipping';
-            flipping.innerHTML = `<span>${oldValue}</span>`;
-            unit.appendChild(flipping);
-
-            topElem.textContent = newValue;
-
-            requestAnimationFrame(() => {
-                flipping.classList.add('fold-animation');
-            });
-
-            flipping.addEventListener('animationend', () => {
-                bottomElem.textContent = newValue;
-                flipping.remove();
-            });
-        }
-
-        function updateClock() {
-            const now = new Date();
-            const h = String(now.getHours()).padStart(2, '0');
-            const m = String(now.getMinutes()).padStart(2, '0');
-            const s = String(now.getSeconds()).padStart(2, '0');
-
-            updateDigit('h1', h[0]);
-            updateDigit('h2', h[1]);
-            updateDigit('m1', m[0]);
-            updateDigit('m2', m[1]);
-
-            if (showSeconds) {
-                updateDigit('s1', s[0]);
-                updateDigit('s2', s[1]);
-            }
-
-            const days = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
-            const dateStr = `${now.getFullYear()}/${String(now.getMonth() + 1).padStart(2, '0')}/${String(now.getDate()).padStart(2, '0')} (${days[now.getDay()]})`;
-            const dateEl = document.getElementById('date-text');
-            if (dateEl) dateEl.textContent = dateStr;
-        }
-
-        setInterval(updateClock, 100);
-        updateClock();
-
-        // --- Web Audio API によるシステム音生成 ---
-        let audioCtx = null;
-        function getAudioContext() {
-            if (!audioCtx) {
-                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-            }
-            if (audioCtx.state === 'suspended') {
-                audioCtx.resume();
-            }
-            return audioCtx;
-        }
-
-        function play25MinSound() {
-            try {
-                const ctx = getAudioContext();
-                const now = ctx.currentTime;
-                
-                [0, 0.15].forEach((timeOffset, index) => {
-                    const osc = ctx.createOscillator();
-                    const gain = ctx.createGain();
-                    osc.type = 'sine';
-                    osc.frequency.setValueAtTime(880 + (index * 220), now + timeOffset);
-                    
-                    gain.gain.setValueAtTime(0.15, now + timeOffset);
-                    gain.gain.exponentialRampToValueAtTime(0.001, now + timeOffset + 0.1);
-                    
-                    osc.connect(gain);
-                    gain.connect(ctx.destination);
-                    
-                    osc.start(now + timeOffset);
-                    osc.stop(now + timeOffset + 0.1);
-                });
-            } catch (e) {}
-        }
-
-        function play30MinSound() {
-            try {
-                const ctx = getAudioContext();
-                const now = ctx.currentTime;
-
-                const osc = ctx.createOscillator();
-                const gain = ctx.createGain();
-                osc.type = 'sawtooth';
-                
-                osc.frequency.setValueAtTime(440, now);
-                osc.frequency.exponentialRampToValueAtTime(110, now + 0.6);
-
-                gain.gain.setValueAtTime(0.2, now);
-                gain.gain.exponentialRampToValueAtTime(0.001, now + 0.6);
-
-                osc.connect(gain);
-                gain.connect(ctx.destination);
-
-                osc.start(now);
-                osc.stop(now + 0.6);
-            } catch (e) {}
-        }
-
-        // --- ポモドーロタイマー ロジック ---
-        const TOTAL_TIME = 30 * 60;
-        let timeLeft = TOTAL_TIME;
-        let pomoTimer = null;
-        let isRunning = false;
-
-        const pomoDisplay = document.getElementById('pomo-display');
-        const pomoFill = document.getElementById('pomo-fill');
-        const pomoStatusMsg = document.getElementById('pomo-status-msg');
-
-        function formatTime(seconds) {
-            const m = Math.floor(seconds / 60);
-            const s = seconds % 60;
-            return `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
-        }
-
-        function updatePomodoroUI() {
-            pomoDisplay.textContent = formatTime(timeLeft);
-            const percentage = (timeLeft / TOTAL_TIME) * 100;
-            pomoFill.style.width = `${percentage}%`;
-        }
-
-        document.getElementById('pomo-start-btn').addEventListener('click', () => {
-            getAudioContext();
-            if (isRunning) return;
-            isRunning = true;
-            pomoStatusMsg.innerHTML = `<span>// システム状態: 集中セッション実行中（残り ${Math.ceil(timeLeft/60)}分）</span>`;
-
-            pomoTimer = setInterval(() => {
-                if (timeLeft > 0) {
-                    timeLeft--;
-                    updatePomodoroUI();
-
-                    if (timeLeft === 5 * 60) {
-                        play25MinSound();
-                        pomoStatusMsg.innerHTML = `<span>// 警告: 25分経過。残り5分です。</span>`;
-                    }
-                } else {
-                    clearInterval(pomoTimer);
-                    isRunning = false;
-                    play30MinSound();
-                    pomoStatusMsg.innerHTML = `<span>// 完了: 30分セッションが終了しました。</span>`;
-                }
-            }, 1000);
-        });
-
-        document.getElementById('pomo-stop-btn').addEventListener('click', () => {
-            if (!isRunning) return;
-            clearInterval(pompTimer);
-            clearInterval(pomoTimer);
-            isRunning = false;
-            pomoStatusMsg.innerHTML = `<span>// システム状態: 一時停止中。</span>`;
-        });
-
-        document.getElementById('pomo-reset-btn').addEventListener('click', () => {
-            clearInterval(pomoTimer);
-            isRunning = false;
-            timeLeft = TOTAL_TIME;
-            updatePomodoroUI();
-            pomoStatusMsg.innerHTML = `<span>// システム状態: タイマーリセット。実行待機中。</span>`;
-        });
-
-        // 共通コントロール
-        document.getElementById('sec-toggle-btn').addEventListener('click', () => {
-            showSeconds = !showSeconds;
-            document.getElementById('sec-group').style.display = showSeconds ? 'flex' : 'none';
-            document.getElementById('sec-colon').style.display = showSeconds ? 'flex' : 'none';
-        });
-
-        document.getElementById('theme-btn').addEventListener('click', () => {
-            document.body.classList.toggle('dark-mode');
-        });
-
-        document.getElementById('fullscreen-btn').addEventListener('click', () => {
-            if (!document.fullscreenElement) {
-                document.documentElement.requestFullscreen().catch(() => {});
-            } else {
-                document.exitFullscreen().catch(() => {});
-            }
-        });
-
-        if ('getBattery' in navigator) {
-            navigator.getBattery().then(battery => {
-                function updateBattery() {
-                    const level = Math.round(battery.level * 100);
-                    const charging = battery.charging ? '⚡' : '';
-                    const bEl = document.getElementById('battery-text');
-                    if (bEl) bEl.textContent = `${level}% ${charging}`;
-                }
-                updateBattery();
-                battery.addEventListener('levelchange', updateBattery);
-                battery.addEventListener('chargingchange', updateBattery);
-            });
-        }
-    </script>
-</body>
-</html>
