@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NieR Tactical Flip Clock</title>
+    <title>NieR Tactical Flip Clock & Pomodoro</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Zen+Kaku+Gothic+New:wght@500;700&display=swap" rel="stylesheet">
@@ -67,7 +67,7 @@
 
         header {
             width: 100%;
-            padding: 20px 40px;
+            padding: 15px 40px;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -77,11 +77,11 @@
         .system-title-box {
             display: flex;
             flex-direction: column;
-            gap: 6px;
+            gap: 4px;
         }
 
         .system-title {
-            font-size: 0.95rem;
+            font-size: 0.85rem;
             font-weight: 700;
             letter-spacing: 2px;
             display: flex;
@@ -93,27 +93,28 @@
         .system-title::before {
             content: "";
             display: inline-block;
-            width: 10px;
-            height: 10px;
+            width: 8px;
+            height: 8px;
             background-color: var(--accent-pink);
         }
 
-        /* 日付を大きく強調したスタイル */
         .date-display {
-            font-size: 1.8rem;
+            font-size: 1.5rem;
             font-weight: 700;
             color: var(--text-main);
             letter-spacing: 2px;
-            margin-left: 18px;
+            margin-left: 14px;
             font-family: 'Share Tech Mono', monospace;
         }
 
         main {
             flex: 1;
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
             width: 100%;
+            gap: 25px;
             z-index: 10;
         }
 
@@ -132,34 +133,34 @@
         /* フリップカード本体 */
         .flip-unit {
             position: relative;
-            width: 120px;
-            height: 170px;
+            width: 100px;
+            height: 140px;
             perspective: 400px;
-            box-shadow: 0 10px 25px var(--shadow-color);
+            box-shadow: 0 8px 20px var(--shadow-color);
             border-radius: 6px;
             background-color: var(--card-bg);
         }
 
         @media (min-width: 900px) {
             .flip-unit {
-                width: 150px;
-                height: 210px;
+                width: 130px;
+                height: 180px;
             }
         }
 
         .seconds-group .flip-unit {
-            width: 85px;
-            height: 120px;
+            width: 70px;
+            height: 100px;
         }
 
         @media (min-width: 900px) {
             .seconds-group .flip-unit {
-                width: 100px;
-                height: 140px;
+                width: 90px;
+                height: 125px;
             }
         }
 
-        /* カードのパーツ（上下固定 ＆ めくれフラップ） */
+        /* カードパーツ */
         .card-half {
             position: absolute;
             left: 0;
@@ -169,23 +170,22 @@
             color: var(--card-text);
             background-color: var(--card-bg);
             font-family: 'Share Tech Mono', monospace;
-            font-size: 130px;
+            font-size: 110px;
             font-weight: bold;
             display: flex;
             justify-content: center;
         }
 
         @media (min-width: 900px) {
-            .card-half { font-size: 160px; }
+            .card-half { font-size: 140px; }
         }
         .seconds-group .card-half {
-            font-size: 90px;
+            font-size: 75px;
         }
         @media (min-width: 900px) {
-            .seconds-group .card-half { font-size: 105px; }
+            .seconds-group .card-half { font-size: 95px; }
         }
 
-        /* 上半分（固定） */
         .card-top {
             top: 0;
             border-top-left-radius: 6px;
@@ -193,22 +193,16 @@
             align-items: flex-end;
             border-bottom: 1px solid rgba(0, 0, 0, 0.4);
         }
-        .card-top span {
-            transform: translateY(50%);
-        }
+        .card-top span { transform: translateY(50%); }
 
-        /* 下半分（固定） */
         .card-bottom {
             bottom: 0;
             border-bottom-left-radius: 6px;
             border-bottom-right-radius: 6px;
             align-items: flex-start;
         }
-        .card-bottom span {
-            transform: translateY(-50%);
-        }
+        .card-bottom span { transform: translateY(-50%); }
 
-        /* 動くフラップ（めくれる上半分） */
         .card-flipping {
             top: 0;
             border-top-left-radius: 6px;
@@ -219,26 +213,17 @@
             z-index: 20;
             backface-visibility: hidden;
         }
-        .card-flipping span {
-            transform: translateY(50%);
-        }
+        .card-flipping span { transform: translateY(50%); }
 
         .fold-animation {
             animation: flipFold 0.35s ease-in forwards;
         }
 
         @keyframes flipFold {
-            0% {
-                transform: rotateX(0deg);
-                background-color: var(--card-bg);
-            }
-            100% {
-                transform: rotateX(-180deg);
-                background-color: #1a1816;
-            }
+            0% { transform: rotateX(0deg); background-color: var(--card-bg); }
+            100% { transform: rotateX(-180deg); background-color: #1a1816; }
         }
 
-        /* 中央のスリット線 */
         .flip-unit::before {
             content: "";
             position: absolute;
@@ -252,7 +237,6 @@
             pointer-events: none;
         }
 
-        /* 左右のヒンジ金具 */
         .flip-unit::after {
             content: "";
             position: absolute;
@@ -267,17 +251,16 @@
             pointer-events: none;
         }
 
-        /* コロン */
         .colon-container {
             display: flex;
             flex-direction: column;
             justify-content: center;
-            gap: 20px;
+            gap: 15px;
         }
 
         .colon-dot {
-            width: 14px;
-            height: 14px;
+            width: 12px;
+            height: 12px;
             background-color: var(--accent-pink);
         }
 
@@ -285,10 +268,65 @@
             background-color: var(--accent-teal);
         }
 
+        /* --- ポモドーロ・セクション --- */
+        .pomodoro-panel {
+            width: 90%;
+            max-width: 650px;
+            background-color: var(--panel-bg);
+            border: 1px solid var(--border-color);
+            padding: 12px 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            box-shadow: 0 4px 15px var(--shadow-color);
+            backdrop-filter: blur(4px);
+        }
+
+        .pomodoro-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.85rem;
+            letter-spacing: 1px;
+        }
+
+        .pomodoro-time {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: var(--accent-pink);
+        }
+
+        /* 右から左へ減っていくメーターバー */
+        .pomo-meter-track {
+            width: 100%;
+            height: 10px;
+            background-color: rgba(0, 0, 0, 0.15);
+            border: 1px solid var(--border-color);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .pomo-meter-fill {
+            position: absolute;
+            top: 0;
+            right: 0; /* 右側を固定し、左へ向かって縮小 */
+            width: 100%;
+            height: 100%;
+            background-color: var(--accent-pink);
+            transition: width 0.3s linear;
+        }
+
+        .pomodoro-controls {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+
         /* フッター */
         footer {
             width: 100%;
-            padding: 0 40px 20px 40px;
+            padding: 0 40px 15px 40px;
             z-index: 10;
         }
 
@@ -296,7 +334,7 @@
             position: relative;
             background-color: var(--panel-bg);
             border: 1px solid var(--border-color);
-            padding: 12px 24px;
+            padding: 10px 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -324,7 +362,7 @@
         }
 
         .footer-message {
-            font-size: 0.95rem;
+            font-size: 0.85rem;
             letter-spacing: 1px;
             padding-left: 10px;
         }
@@ -332,16 +370,16 @@
         .footer-controls {
             display: flex;
             align-items: center;
-            gap: 15px;
+            gap: 12px;
         }
 
         .nier-btn {
             background: transparent;
             border: 1px solid var(--border-color);
             color: var(--text-main);
-            padding: 6px 14px;
+            padding: 5px 12px;
             font-family: inherit;
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             cursor: pointer;
             transition: all 0.2s ease;
         }
@@ -353,8 +391,8 @@
 
         .dots-pattern-line {
             width: 100%;
-            height: 6px;
-            margin-top: 6px;
+            height: 5px;
+            margin-top: 5px;
             background-image: radial-gradient(var(--text-main) 1.5px, transparent 1.5px);
             background-size: 8px 6px;
             opacity: 0.6;
@@ -365,25 +403,20 @@
 
     <header id="header-ui">
         <div class="system-title-box">
-            <div class="system-title">// SYSTEM : KAKEIBO_CLOCK [v3.6]</div>
+            <div class="system-title">// SYSTEM : KAKEIBO_CLOCK [v3.7]</div>
             <div class="date-display" id="date-text">----/--/-- (---)</div>
         </div>
-        <div id="battery-box" style="font-size: 0.95rem; color: var(--text-sub); font-family: 'Share Tech Mono', monospace;">
+        <div id="battery-box" style="font-size: 0.9rem; color: var(--text-sub); font-family: 'Share Tech Mono', monospace;">
             BATTERY: <span id="battery-text">--%</span>
         </div>
     </header>
 
     <main>
+        <!-- パタパタ時計 -->
         <div class="clock-container">
             <div class="group-container">
-                <div class="flip-unit" id="h1">
-                    <div class="card-half card-top"><span>0</span></div>
-                    <div class="card-half card-bottom"><span>0</span></div>
-                </div>
-                <div class="flip-unit" id="h2">
-                    <div class="card-half card-top"><span>0</span></div>
-                    <div class="card-half card-bottom"><span>0</span></div>
-                </div>
+                <div class="flip-unit" id="h1"><div class="card-half card-top"><span>0</span></div><div class="card-half card-bottom"><span>0</span></div></div>
+                <div class="flip-unit" id="h2"><div class="card-half card-top"><span>0</span></div><div class="card-half card-bottom"><span>0</span></div></div>
             </div>
 
             <div class="colon-container">
@@ -392,14 +425,8 @@
             </div>
 
             <div class="group-container">
-                <div class="flip-unit" id="m1">
-                    <div class="card-half card-top"><span>0</span></div>
-                    <div class="card-half card-bottom"><span>0</span></div>
-                </div>
-                <div class="flip-unit" id="m2">
-                    <div class="card-half card-top"><span>0</span></div>
-                    <div class="card-half card-bottom"><span>0</span></div>
-                </div>
+                <div class="flip-unit" id="m1"><div class="card-half card-top"><span>0</span></div><div class="card-half card-bottom"><span>0</span></div></div>
+                <div class="flip-unit" id="m2"><div class="card-half card-top"><span>0</span></div><div class="card-half card-bottom"><span>0</span></div></div>
             </div>
 
             <div class="colon-container sec-colon" id="sec-colon">
@@ -408,14 +435,24 @@
             </div>
 
             <div class="group-container seconds-group" id="sec-group">
-                <div class="flip-unit" id="s1">
-                    <div class="card-half card-top"><span>0</span></div>
-                    <div class="card-half card-bottom"><span>0</span></div>
-                </div>
-                <div class="flip-unit" id="s2">
-                    <div class="card-half card-top"><span>0</span></div>
-                    <div class="card-half card-bottom"><span>0</span></div>
-                </div>
+                <div class="flip-unit" id="s1"><div class="card-half card-top"><span>0</span></div><div class="card-half card-bottom"><span>0</span></div></div>
+                <div class="flip-unit" id="s2"><div class="card-half card-top"><span>0</span></div><div class="card-half card-bottom"><span>0</span></div></div>
+            </div>
+        </div>
+
+        <!-- ポモドーロタイマーパネル (30分メーター付き) -->
+        <div class="pomodoro-panel">
+            <div class="pomodoro-header">
+                <span>// POMODORO TIMER (30 MIN)</span>
+                <span class="pomodoro-time" id="pomo-display">30:00</span>
+            </div>
+            <div class="pomo-meter-track">
+                <div class="pomo-meter-fill" id="pomo-fill" style="width: 100%;"></div>
+            </div>
+            <div class="pomodoro-controls">
+                <button class="nier-btn" id="pomo-start-btn">▶ START</button>
+                <button class="nier-btn" id="pomo-stop-btn">■ STOP</button>
+                <button class="nier-btn" id="pomo-reset-btn">↺ RESET</button>
             </div>
         </div>
     </main>
@@ -423,7 +460,7 @@
     <footer id="footer-ui">
         <div class="nier-footer-box">
             <div class="footer-message">
-                <span>// システム状態: 正常稼働中。</span>
+                <span>// システム状態: 正常稼働中。集中タスク実行待機中。</span>
             </div>
             <div class="footer-controls">
                 <button class="nier-btn" id="theme-btn">◐ テーマ切替</button>
@@ -435,6 +472,7 @@
     </footer>
 
     <script>
+        // 時計ロジック
         const digitsPrev = { h1: '', h2: '', m1: '', m2: '', s1: '', s2: '' };
         let showSeconds = true;
 
@@ -500,6 +538,56 @@
         setInterval(updateClock, 100);
         updateClock();
 
+        // --- ポモドーロタイマー ロジック (30分 = 1800秒) ---
+        const TOTAL_TIME = 30 * 60;
+        let timeLeft = TOTAL_TIME;
+        let pomoTimer = null;
+        let isRunning = false;
+
+        const pomoDisplay = document.getElementById('pomo-display');
+        const pomoFill = document.getElementById('pomo-fill');
+
+        function formatTime(seconds) {
+            const m = Math.floor(seconds / 60);
+            const s = seconds % 60;
+            return `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+        }
+
+        function updatePomodoroUI() {
+            pomoDisplay.textContent = formatTime(timeLeft);
+            const percentage = (timeLeft / TOTAL_TIME) * 100;
+            pomoFill.style.width = `${percentage}%`;
+        }
+
+        document.getElementById('pomo-start-btn').addEventListener('click', () => {
+            if (isRunning) return;
+            isRunning = true;
+            pomoTimer = setInterval(() => {
+                if (timeLeft > 0) {
+                    timeLeft--;
+                    updatePomodoroUI();
+                } else {
+                    clearInterval(pomoTimer);
+                    isRunning = false;
+                    alert('// 30分経過しました。タスクを完了してください。');
+                }
+            }, 1000);
+        });
+
+        document.getElementById('pomo-stop-btn').addEventListener('click', () => {
+            if (!isRunning) return;
+            clearInterval(pomoTimer);
+            isRunning = false;
+        });
+
+        document.getElementById('pomo-reset-btn').addEventListener('click', () => {
+            clearInterval(pomoTimer);
+            isRunning = false;
+            timeLeft = TOTAL_TIME;
+            updatePomodoroUI();
+        });
+
+        // 共通コントロール
         document.getElementById('sec-toggle-btn').addEventListener('click', () => {
             showSeconds = !showSeconds;
             document.getElementById('sec-group').style.display = showSeconds ? 'flex' : 'none';
