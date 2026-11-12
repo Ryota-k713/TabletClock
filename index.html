@@ -61,14 +61,14 @@
             background-image: 
                 linear-gradient(var(--grid-line) 1px, transparent 1px),
                 linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
-            background-size: 24px 24px;
+            background-size: 20px 20px;
             transition: background-color 0.4s ease, color 0.4s ease;
         }
 
-        /* ヘッダー */
+        /* ヘッダー（8インチ向けに高さを抑制） */
         header {
             width: 100%;
-            padding: 20px 40px;
+            padding: 12px 24px;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -78,37 +78,37 @@
         .system-title-box {
             display: flex;
             flex-direction: column;
-            gap: 4px;
+            gap: 2px;
         }
 
         .system-title {
-            font-size: 0.9rem;
+            font-size: 0.8rem;
             font-weight: 700;
-            letter-spacing: 2px;
+            letter-spacing: 1.5px;
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
             color: var(--text-sub);
         }
 
         .system-title::before {
             content: "";
             display: inline-block;
-            width: 8px;
-            height: 8px;
+            width: 6px;
+            height: 6px;
             background-color: var(--accent-pink);
         }
 
         .date-display {
-            font-size: 2rem;
+            font-size: 1.5rem;
             font-weight: 700;
             color: var(--text-main);
-            letter-spacing: 2px;
-            margin-left: 16px;
+            letter-spacing: 1.5px;
+            margin-left: 12px;
             font-family: 'Share Tech Mono', monospace;
         }
 
-        /* メインエリア（最大限拡大） */
+        /* メインエリア（8インチ向け最適化） */
         main {
             flex: 1;
             display: flex;
@@ -116,7 +116,7 @@
             justify-content: center;
             align-items: center;
             width: 100%;
-            gap: 28px;
+            gap: 18px;
             z-index: 10;
         }
 
@@ -124,31 +124,31 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 16px;
+            gap: 12px;
         }
 
         .group-container {
             display: flex;
-            gap: 10px;
+            gap: 8px;
         }
 
-        /* 時計カードをさらに大型化 */
+        /* 時計カードを8インチ用に少しコンパクト化 */
         .flip-unit {
             position: relative;
-            width: 160px;
-            height: 230px;
+            width: 125px;
+            height: 180px;
             perspective: 500px;
-            box-shadow: 0 12px 30px var(--shadow-color);
-            border-radius: 8px;
+            box-shadow: 0 8px 20px var(--shadow-color);
+            border-radius: 6px;
             background-color: var(--card-bg);
         }
 
         .seconds-group .flip-unit {
-            width: 105px;
-            height: 150px;
+            width: 85px;
+            height: 120px;
         }
 
-        /* 数字フォントの超大型化 */
+        /* 数字フォントサイズ調整 */
         .card-half {
             position: absolute;
             left: 0;
@@ -158,20 +158,20 @@
             color: var(--card-text);
             background-color: var(--card-bg);
             font-family: 'Share Tech Mono', monospace;
-            font-size: 185px;
+            font-size: 145px;
             font-weight: bold;
             display: flex;
             justify-content: center;
         }
 
         .seconds-group .card-half {
-            font-size: 120px;
+            font-size: 95px;
         }
 
         .card-top {
             top: 0;
-            border-top-left-radius: 8px;
-            border-top-right-radius: 8px;
+            border-top-left-radius: 6px;
+            border-top-right-radius: 6px;
             align-items: flex-end;
             border-bottom: 1px solid rgba(0, 0, 0, 0.4);
         }
@@ -179,16 +179,16 @@
 
         .card-bottom {
             bottom: 0;
-            border-bottom-left-radius: 8px;
-            border-bottom-right-radius: 8px;
+            border-bottom-left-radius: 6px;
+            border-bottom-right-radius: 6px;
             align-items: flex-start;
         }
         .card-bottom span { transform: translateY(-50%); }
 
         .card-flipping {
             top: 0;
-            border-top-left-radius: 8px;
-            border-top-right-radius: 8px;
+            border-top-left-radius: 6px;
+            border-top-right-radius: 6px;
             align-items: flex-end;
             transform-origin: bottom;
             transform-style: preserve-3d;
@@ -223,42 +223,42 @@
             content: "";
             position: absolute;
             top: 50%;
-            left: -4px;
-            right: -4px;
-            height: 12px;
-            border-left: 7px solid var(--border-color);
-            border-right: 7px solid var(--border-color);
-            margin-top: -6px;
+            left: -3px;
+            right: -3px;
+            height: 10px;
+            border-left: 5px solid var(--border-color);
+            border-right: 5px solid var(--border-color);
+            margin-top: -5px;
             z-index: 31;
             pointer-events: none;
         }
 
-        /* コロン（中央の点）のカラーライン等を排除し統一感を持たせる */
+        /* コロン */
         .colon-container {
             display: flex;
             flex-direction: column;
             justify-content: center;
-            gap: 22px;
+            gap: 16px;
         }
 
         .colon-dot {
-            width: 14px;
-            height: 14px;
+            width: 10px;
+            height: 10px;
             background-color: var(--text-main);
             opacity: 0.8;
         }
 
-        /* --- ポモドーロタイマーパネル（大サイズ化） --- */
+        /* --- ポモドーロタイマーパネル（コンパクト化） --- */
         .pomodoro-panel {
-            width: 90%;
-            max-width: 900px;
+            width: 85%;
+            max-width: 720px;
             background-color: var(--panel-bg);
             border: 1px solid var(--border-color);
-            padding: 18px 32px;
+            padding: 12px 24px;
             display: flex;
             flex-direction: column;
-            gap: 12px;
-            box-shadow: 0 6px 20px var(--shadow-color);
+            gap: 8px;
+            box-shadow: 0 4px 15px var(--shadow-color);
             backdrop-filter: blur(4px);
         }
 
@@ -266,20 +266,20 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            font-size: 1.05rem;
-            letter-spacing: 1.5px;
+            font-size: 0.9rem;
+            letter-spacing: 1px;
         }
 
         .pomodoro-time {
             font-family: 'Share Tech Mono', monospace;
-            font-size: 1.6rem;
+            font-size: 1.3rem;
             font-weight: bold;
             color: var(--accent-pink);
         }
 
         .pomo-meter-track {
             width: 100%;
-            height: 16px;
+            height: 12px;
             background-color: rgba(0, 0, 0, 0.15);
             border: 1px solid var(--border-color);
             position: relative;
@@ -299,13 +299,13 @@
         .pomodoro-controls {
             display: flex;
             justify-content: flex-end;
-            gap: 16px;
+            gap: 12px;
         }
 
-        /* フッター */
+        /* フッターコンパクト化 */
         footer {
             width: 100%;
-            padding: 0 40px 20px 40px;
+            padding: 0 24px 12px 24px;
             z-index: 10;
         }
 
@@ -313,7 +313,7 @@
             position: relative;
             background-color: var(--panel-bg);
             border: 1px solid var(--border-color);
-            padding: 12px 28px;
+            padding: 8px 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -322,10 +322,10 @@
         .nier-footer-box::before {
             content: "";
             position: absolute;
-            left: 5px;
-            top: 5px;
-            bottom: 5px;
-            width: 6px;
+            left: 4px;
+            top: 4px;
+            bottom: 4px;
+            width: 5px;
             border-left: 2px solid var(--text-main);
             border-right: 1px solid var(--text-main);
         }
@@ -333,32 +333,32 @@
         .nier-footer-box::after {
             content: "";
             position: absolute;
-            right: 8px;
-            bottom: 8px;
-            width: 7px;
-            height: 7px;
+            right: 6px;
+            bottom: 6px;
+            width: 6px;
+            height: 6px;
             background-color: var(--text-main);
         }
 
         .footer-message {
-            font-size: 0.95rem;
-            letter-spacing: 1px;
-            padding-left: 12px;
+            font-size: 0.85rem;
+            letter-spacing: 0.5px;
+            padding-left: 10px;
         }
 
         .footer-controls {
             display: flex;
             align-items: center;
-            gap: 16px;
+            gap: 12px;
         }
 
         .nier-btn {
             background: transparent;
             border: 1px solid var(--border-color);
             color: var(--text-main);
-            padding: 8px 18px;
+            padding: 6px 14px;
             font-family: inherit;
-            font-size: 0.95rem;
+            font-size: 0.85rem;
             cursor: pointer;
             transition: all 0.2s ease;
         }
@@ -370,10 +370,10 @@
 
         .dots-pattern-line {
             width: 100%;
-            height: 6px;
-            margin-top: 8px;
-            background-image: radial-gradient(var(--text-main) 1.5px, transparent 1.5px);
-            background-size: 10px 8px;
+            height: 4px;
+            margin-top: 6px;
+            background-image: radial-gradient(var(--text-main) 1.2px, transparent 1.2px);
+            background-size: 8px 6px;
             opacity: 0.6;
         }
     </style>
@@ -382,16 +382,16 @@
 
     <header id="header-ui">
         <div class="system-title-box">
-            <div class="system-title">// SYSTEM : KAKEIBO_CLOCK [v4.0]</div>
+            <div class="system-title">// SYSTEM : KAKEIBO_CLOCK [v4.2_8INCH]</div>
             <div class="date-display" id="date-text">----/--/-- (---)</div>
         </div>
-        <div id="battery-box" style="font-size: 1.1rem; color: var(--text-sub); font-family: 'Share Tech Mono', monospace;">
+        <div id="battery-box" style="font-size: 0.95rem; color: var(--text-sub); font-family: 'Share Tech Mono', monospace;">
             BATTERY: <span id="battery-text">--%</span>
         </div>
     </header>
 
     <main>
-        <!-- パタパタ時計（大サイズ） -->
+        <!-- パタパタ時計（8インチコンパクトサイズ） -->
         <div class="clock-container">
             <div class="group-container">
                 <div class="flip-unit" id="h1"><div class="card-half card-top"><span>0</span></div><div class="card-half card-bottom"><span>0</span></div></div>
@@ -419,7 +419,7 @@
             </div>
         </div>
 
-        <!-- ポモドーロタイマーパネル（大サイズ） -->
+        <!-- ポモドーロタイマーパネル（コンパクト化） -->
         <div class="pomodoro-panel">
             <div class="pomodoro-header">
                 <span>// POMODORO TIMER (30 MIN)</span>
@@ -592,82 +592,4 @@
 
         function updatePomodoroUI() {
             pomoDisplay.textContent = formatTime(timeLeft);
-            const percentage = (timeLeft / TOTAL_TIME) * 100;
-            pomoFill.style.width = `${percentage}%`;
-        }
-
-        document.getElementById('pomo-start-btn').addEventListener('click', () => {
-            getAudioContext();
-            if (isRunning) return;
-            isRunning = true;
-            pomoStatusMsg.innerHTML = `<span>// システム状態: 集中セッション実行中（残り ${Math.ceil(timeLeft/60)}分）</span>`;
-
-            pomoTimer = setInterval(() => {
-                if (timeLeft > 0) {
-                    timeLeft--;
-                    updatePomodoroUI();
-
-                    if (timeLeft === 5 * 60) {
-                        play25MinSound();
-                        pomoStatusMsg.innerHTML = `<span>// 警告: 25分経過。残り5分です。</span>`;
-                    }
-                } else {
-                    clearInterval(pomoTimer);
-                    isRunning = false;
-                    play30MinSound();
-                    pomoStatusMsg.innerHTML = `<span>// 完了: 30分セッションが終了しました。</span>`;
-                }
-            }, 1000);
-        });
-
-        document.getElementById('pomo-stop-btn').addEventListener('click', () => {
-            if (!isRunning) return;
-            clearInterval(pompTimer);
-            clearInterval(pomoTimer);
-            isRunning = false;
-            pomoStatusMsg.innerHTML = `<span>// システム状態: 一時停止中。</span>`;
-        });
-
-        document.getElementById('pomo-reset-btn').addEventListener('click', () => {
-            clearInterval(pomoTimer);
-            isRunning = false;
-            timeLeft = TOTAL_TIME;
-            updatePomodoroUI();
-            pomoStatusMsg.innerHTML = `<span>// システム状態: タイマーリセット。実行待機中。</span>`;
-        });
-
-        // 共通コントロール
-        document.getElementById('sec-toggle-btn').addEventListener('click', () => {
-            showSeconds = !showSeconds;
-            document.getElementById('sec-group').style.display = showSeconds ? 'flex' : 'none';
-            document.getElementById('sec-colon').style.display = showSeconds ? 'flex' : 'none';
-        });
-
-        document.getElementById('theme-btn').addEventListener('click', () => {
-            document.body.classList.toggle('dark-mode');
-        });
-
-        document.getElementById('fullscreen-btn').addEventListener('click', () => {
-            if (!document.fullscreenElement) {
-                document.documentElement.requestFullscreen().catch(() => {});
-            } else {
-                document.exitFullscreen().catch(() => {});
-            }
-        });
-
-        if ('getBattery' in navigator) {
-            navigator.getBattery().then(battery => {
-                function updateBattery() {
-                    const level = Math.round(battery.level * 100);
-                    const charging = battery.charging ? '⚡' : '';
-                    const bEl = document.getElementById('battery-text');
-                    if (bEl) bEl.textContent = `${level}% ${charging}`;
-                }
-                updateBattery();
-                battery.addEventListener('levelchange', updateBattery);
-                battery.addEventListener('chargingchange', updateBattery);
-            });
-        }
-    </script>
-</body>
-</html>
+            const percentage = (
