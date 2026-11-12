@@ -2,7 +2,7 @@
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>NieR Tactical Flip Clock & Pomodoro</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -63,12 +63,19 @@
                 linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
             background-size: 20px 20px;
             transition: background-color 0.4s ease, color 0.4s ease;
+            
+            /* Fully Kiosk等で大きすぎてはみ出るのを防ぐため、全体を少し縮小 (0.85 = 85%) */
+            transform: scale(0.88);
+            transform-origin: center center;
+            width: 113.6%;
+            height: 113.6%;
+            margin: -6.8% 0 0 -6.8%;
         }
 
-        /* ヘッダー（8インチ向けに高さを抑制） */
+        /* ヘッダー */
         header {
             width: 100%;
-            padding: 12px 24px;
+            padding: 10px 24px;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -100,7 +107,7 @@
         }
 
         .date-display {
-            font-size: 1.5rem;
+            font-size: 1.4rem;
             font-weight: 700;
             color: var(--text-main);
             letter-spacing: 1.5px;
@@ -108,7 +115,7 @@
             font-family: 'Share Tech Mono', monospace;
         }
 
-        /* メインエリア（8インチ向け最適化） */
+        /* メインエリア */
         main {
             flex: 1;
             display: flex;
@@ -116,7 +123,7 @@
             justify-content: center;
             align-items: center;
             width: 100%;
-            gap: 18px;
+            gap: 16px;
             z-index: 10;
         }
 
@@ -132,11 +139,11 @@
             gap: 8px;
         }
 
-        /* 時計カードを8インチ用に少しコンパクト化 */
+        /* 時計カードサイズ */
         .flip-unit {
             position: relative;
-            width: 125px;
-            height: 180px;
+            width: 115px;
+            height: 165px;
             perspective: 500px;
             box-shadow: 0 8px 20px var(--shadow-color);
             border-radius: 6px;
@@ -144,11 +151,11 @@
         }
 
         .seconds-group .flip-unit {
-            width: 85px;
-            height: 120px;
+            width: 75px;
+            height: 110px;
         }
 
-        /* 数字フォントサイズ調整 */
+        /* 数字フォントサイズ */
         .card-half {
             position: absolute;
             left: 0;
@@ -158,14 +165,14 @@
             color: var(--card-text);
             background-color: var(--card-bg);
             font-family: 'Share Tech Mono', monospace;
-            font-size: 145px;
+            font-size: 130px;
             font-weight: bold;
             display: flex;
             justify-content: center;
         }
 
         .seconds-group .card-half {
-            font-size: 95px;
+            font-size: 85px;
         }
 
         .card-top {
@@ -238,7 +245,7 @@
             display: flex;
             flex-direction: column;
             justify-content: center;
-            gap: 16px;
+            gap: 14px;
         }
 
         .colon-dot {
@@ -248,16 +255,16 @@
             opacity: 0.8;
         }
 
-        /* --- ポモドーロタイマーパネル（コンパクト化） --- */
+        /* ポモドーロタイマーパネル */
         .pomodoro-panel {
             width: 85%;
-            max-width: 720px;
+            max-width: 680px;
             background-color: var(--panel-bg);
             border: 1px solid var(--border-color);
-            padding: 12px 24px;
+            padding: 10px 20px;
             display: flex;
             flex-direction: column;
-            gap: 8px;
+            gap: 6px;
             box-shadow: 0 4px 15px var(--shadow-color);
             backdrop-filter: blur(4px);
         }
@@ -266,20 +273,20 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             letter-spacing: 1px;
         }
 
         .pomodoro-time {
             font-family: 'Share Tech Mono', monospace;
-            font-size: 1.3rem;
+            font-size: 1.2rem;
             font-weight: bold;
             color: var(--accent-pink);
         }
 
         .pomo-meter-track {
             width: 100%;
-            height: 12px;
+            height: 10px;
             background-color: rgba(0, 0, 0, 0.15);
             border: 1px solid var(--border-color);
             position: relative;
@@ -299,13 +306,13 @@
         .pomodoro-controls {
             display: flex;
             justify-content: flex-end;
-            gap: 12px;
+            gap: 10px;
         }
 
-        /* フッターコンパクト化 */
+        /* フッター */
         footer {
             width: 100%;
-            padding: 0 24px 12px 24px;
+            padding: 0 24px 10px 24px;
             z-index: 10;
         }
 
@@ -313,7 +320,7 @@
             position: relative;
             background-color: var(--panel-bg);
             border: 1px solid var(--border-color);
-            padding: 8px 20px;
+            padding: 6px 16px;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -341,24 +348,24 @@
         }
 
         .footer-message {
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             letter-spacing: 0.5px;
-            padding-left: 10px;
+            padding-left: 8px;
         }
 
         .footer-controls {
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 10px;
         }
 
         .nier-btn {
             background: transparent;
             border: 1px solid var(--border-color);
             color: var(--text-main);
-            padding: 6px 14px;
+            padding: 4px 12px;
             font-family: inherit;
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             cursor: pointer;
             transition: all 0.2s ease;
         }
@@ -371,7 +378,7 @@
         .dots-pattern-line {
             width: 100%;
             height: 4px;
-            margin-top: 6px;
+            margin-top: 4px;
             background-image: radial-gradient(var(--text-main) 1.2px, transparent 1.2px);
             background-size: 8px 6px;
             opacity: 0.6;
@@ -382,16 +389,16 @@
 
     <header id="header-ui">
         <div class="system-title-box">
-            <div class="system-title">// SYSTEM : KAKEIBO_CLOCK [v4.2_8INCH]</div>
+            <div class="system-title">// SYSTEM : KAKEIBO_CLOCK [v4.3_FITS]</div>
             <div class="date-display" id="date-text">----/--/-- (---)</div>
         </div>
-        <div id="battery-box" style="font-size: 0.95rem; color: var(--text-sub); font-family: 'Share Tech Mono', monospace;">
+        <div id="battery-box" style="font-size: 0.9rem; color: var(--text-sub); font-family: 'Share Tech Mono', monospace;">
             BATTERY: <span id="battery-text">--%</span>
         </div>
     </header>
 
     <main>
-        <!-- パタパタ時計（8インチコンパクトサイズ） -->
+        <!-- パタパタ時計 -->
         <div class="clock-container">
             <div class="group-container">
                 <div class="flip-unit" id="h1"><div class="card-half card-top"><span>0</span></div><div class="card-half card-bottom"><span>0</span></div></div>
@@ -419,7 +426,7 @@
             </div>
         </div>
 
-        <!-- ポモドーロタイマーパネル（コンパクト化） -->
+        <!-- ポモドーロタイマーパネル -->
         <div class="pomodoro-panel">
             <div class="pomodoro-header">
                 <span>// POMODORO TIMER (30 MIN)</span>
@@ -592,4 +599,37 @@
 
         function updatePomodoroUI() {
             pomoDisplay.textContent = formatTime(timeLeft);
-            const percentage = (
+            const percentage = (timeLeft / TOTAL_TIME) * 100;
+            pomoFill.style.width = `${percentage}\%`; }  document.getElementById('pomo-start-btn').addEventListener('click', () => { getAudioContext(); if (isRunning) return; isRunning = true; pomoStatusMsg.innerHTML = `<span>// システム状態: 集中セッション実行中（残り ${Math.ceil(timeLeft/60)}分）</span>`;
+
+            pomoTimer = setInterval(() => {
+                if (timeLeft > 0) {
+                    timeLeft--;
+                    updatePomodoroUI();
+
+                    if (timeLeft === 5 * 60) {
+                        play25MinSound();
+                        pomoStatusMsg.innerHTML = `<span>// 警告: 25分経過。残り5分です。</span>`;
+                    }
+                } else {
+                    clearInterval(pomoTimer);
+                    isRunning = false;
+                    play30MinSound();
+                    pomoStatusMsg.innerHTML = `<span>// 完了: 30分セッションが終了しました。</span>`;
+                }
+            }, 1000);
+        });
+
+        document.getElementById('pomo-stop-btn').addEventListener('click', () => {
+            if (!isRunning) return;
+            clearInterval(pomoTimer);
+            isRunning = false;
+            pomoStatusMsg.innerHTML = `<span>// システム状態: 一時停止中。</span>`;
+        });
+
+        document.getElementById('pomo-reset-btn').addEventListener('click', () => {
+            clearInterval(pomoTimer);
+            isRunning = false;
+            timeLeft = TOTAL_TIME;
+            updatePomodoroUI();
+            pomoStatusMsg.innerHTML = `<span>// システム状態: タイマーリセット。実行待機
